@@ -55,9 +55,15 @@
                 </div>
             </div>
         </nav>
-        <h1>Electro Sistemas</h1>
 
-        <div class="container bg-primary">
+        <div class="container">
+            <div class="alert alert-primary mt-5">
+                <h1>
+                    {% block titulo %}
+                    {% endblock %}
+                </h1>
+            </div>
+
             {% block contenido %}
             {% endblock %}
         </div>

@@ -5,9 +5,15 @@ class Categorias(models.Model):
     nombre = models.CharField(max_length = 100, blank = False, null = False)
     descripcion = models.CharField(max_length = 300)
 
+    def __str__(self) -> str:
+        return self.nombre
+
 class Marcas(models.Model):
     nombre = models.CharField(max_length = 100, blank = False, null = False)
     descripcion = models.CharField(max_length = 300)
+
+    def __str__(self) -> str:
+        return self.nombre
 
 class Productos(models.Model):
     descripcion = models.CharField(max_length = 400, blank = False, null = False)
