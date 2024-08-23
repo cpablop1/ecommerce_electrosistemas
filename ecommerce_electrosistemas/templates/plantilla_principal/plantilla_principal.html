@@ -20,37 +20,41 @@
                 <a class="navbar-brand" href="#"><i class="bi bi-house-fill"></i>Inicio</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                     aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <!-- <span class="navbar-toggler-icon">alsdjfkdsl</span> -->
+                    <i class="bi bi-list"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarScroll">
                     <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                Link
+                                Almacén
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-dropbox"></i> Productos</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmarks-fill"></i> Categorias</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-microsoft"></i> Marcas</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
-                        </li>
                     </ul>
+                    <form class="row g-3">
+                        <div class="col-auto">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        </div>
+                      </form>
                     <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <div class="btn-group">
+                            <div class="btn-group dropstart">
+                                <!-- <button class="btn btn-outline-success" type="submit">Salir</button> -->
+                                <a href="#" class="btn btn-secundary"><b><i class="bi bi-door-open-fill"></i> Salir</b></a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -61,6 +65,7 @@
                 <h1>
                     {% block titulo %}
                     {% endblock %}
+                    <i role="button" id="agregar" class="bi bi-plus-square-fill"></i>
                 </h1>
             </div>
 
