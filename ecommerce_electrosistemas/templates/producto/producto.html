@@ -1,5 +1,7 @@
 {% extends 'plantilla_principal/plantilla_principal.html' %}
 
+{% load static %}
+
 {% block titulo %}
 <i class="bi bi-dropbox"></i> Productos
 {% endblock %}
@@ -34,7 +36,11 @@
         </tr>
     </tbody>
 </table>
+
+{% include 'producto/agregar.html' %}
+
 {% endblock %}
 
 {% block script %}
+    <script src="{% static 'producto/main.js' %}"></script>
 {% endblock %}
