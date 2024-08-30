@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.VistaProducto, name='vista_producto'),
-    #path('crear-producto/', views.CrearProducto, name='crear_producto'),
+    path('categoria/', views.VistaCategoria, name='vista_categoria'),
+    path('agregar-categoria/', views.AgregarCategoria, name='agregar_categoria'),
 ]
