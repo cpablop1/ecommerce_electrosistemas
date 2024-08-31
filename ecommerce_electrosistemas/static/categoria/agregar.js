@@ -1,4 +1,6 @@
-export function agregar(formulario){
+import { listar } from "./listar.js";
+
+export function agregar(formulario) {
     let data = new FormData(formulario); // Creamos un objeto FormDato para enviarlo a servidor
 
     fetch('/producto/agregar-categoria/', {
@@ -12,9 +14,10 @@ export function agregar(formulario){
     }).then((res) => {
         if (res.res) { // Si la respuesta fue exitosa
             formulario.reset(); // Limpiamos el formulario
-            bootstrap.Modal.getInstance('#modal_categoria').hide(); // Y Ocultamos la ventana modal
+            bootstrap.Modal.getInstance(document.getElementById('modal_categoria')).hide(); // Y Ocultamos la ventana modal
+            listar();
         } else {
-            alert('Hubuo en el servidor'); // Caso contrario lanzamos una alerta
+            alert('Hubo un en el servidor'); // Caso contrario lanzamos una alerta
         }
     }).catch(error => { // Si la petición tuvo problemas
         console.log(error);

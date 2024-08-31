@@ -1,4 +1,15 @@
 import { agregar } from "./agregar.js";
+import { listar } from "./listar.js";
+import { editar } from "./editar.js";
+
+// Al cargar el DOM ejecutar la funcion de listar
+window.onload = () => {
+    listar();
+}
+
+window.editar = id => {
+    editar(id);
+}
 
 // Evento para mostrar la ventana modal para crear categorías
 document.getElementById('agregar').addEventListener('click', () => {
