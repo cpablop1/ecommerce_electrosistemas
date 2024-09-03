@@ -7,4 +7,5 @@ urlpatterns = [
     path('categoria/', views.VistaCategoria, name='vista_categoria'),
     path('agregar-categoria/', views.AgregarCategoria, name='agregar_categoria'),
     path('listar-categorias/', views.ListarCategorias, name='listar_categorias'),
+    path('ver-para-editar-categoria/', views.VerParaEditarCategoria, name='ver_para_editar_categoria'),
 ]

@@ -16,6 +16,13 @@ def AgregarCategoria(request):
         nombre = request.POST.get('nombre', '').upper()
         descripcion = request.POST.get('descripcion', '').upper()
 
+        # Formateamos el id
+        try:
+            int(id)
+        except:
+            msg = 'Hubo un error al visualizar la categoría.'
+            id = None
+
         # Inicializando las respuestas del servidor
         res = False
         msg = ''
@@ -60,5 +67,36 @@ def ListarCategorias(request):
         data['res'] = True
     except:
         data['res'] = False
+
+    return JsonResponse(data)
+
+def VerParaEditarCategoria(request):
+    # Capturamos el id por get
+    id = request.GET.get('id', None)
+    # Variables de inicializacion y de respuesta
+    flag = False
+    res = False
+    msg = ''
+    data = {}
+    # Formateamos el id
+    try:
+        int(id)
+        flag = True
+    except:
+        msg = 'Hubo un error al visualizar la categoría.'
+
+    # Comprobamos si es válido el id
+    if flag:
+        categoria = Categorias.objects.get(id = id)
+    else:
+        msg = 'Hubo un error al visualizar la categoría.'
+        
+    data['data'] = {
+        'id': categoria.id,
+        'nombre': categoria.nombre,
+        'descripcion': categoria.descripcion
+    }
+    data['res'] = res
+    data['msg'] = msg
 
     return JsonResponse(data)

@@ -16,6 +16,7 @@ export function agregar(formulario) {
             formulario.reset(); // Limpiamos el formulario
             bootstrap.Modal.getInstance(document.getElementById('modal_categoria')).hide(); // Y Ocultamos la ventana modal
             listar();
+            alert(res.msg);
         } else {
             alert('Hubo un en el servidor'); // Caso contrario lanzamos una alerta
         }
