@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="form_producto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="modal_producto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -8,10 +8,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="form_producto">
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control form-control-sm" id="descripcion" rows="3"></textarea>
+                        <textarea class="form-control form-control-sm" id="descripcion" rows="3" name="descripcion" maxlength="400" required></textarea>
                     </div>
                    <!--  <div class="mb-3">
                         <label for="stock" class="form-label">Cantidad</label>
@@ -21,26 +21,28 @@
                         <label for="precio_publico" class="form-label">Precios</label>
                         <div class="col-auto">
                             <label for="precio_publico" class="form-label">Público</label>
-                            <input type="number" class="form-control form-control-sm" id="precio_publico">
+                            <input type="number" class="form-control form-control-sm" id="precio_publico" name="precio_publico">
                         </div>
                         <div class="col-auto">
                             <label for="precio_mayorista" class="form-label">Mayorista</label>
-                            <input type="number" class="form-control form-control-sm" id="precio_mayorista">
+                            <input type="number" class="form-control form-control-sm" id="precio_mayorista" name="precio_mayorista">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="img_1" class="form-label">Imágenes</label>
                         <div class="col-auto">
-                            <input type="number" class="form-control form-control-sm" id="img_1">
+                            <label for="img_1" class="form-label">Imágne 1</label>
+                            <input accept="image/*" type="file" class="form-control form-control-sm" id="img_1" name="img_1">
                         </div>
                         <div class="col-auto">
-                            <input type="number" class="form-control form-control-sm" id="img_2">
+                            <label for="img_2" class="form-label">Imágne 2</label>
+                            <input accept="image/*" type="file" class="form-control form-control-sm" id="img_2" name="img_2">
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="col-auto">
                             <label for="estante" class="form-label">Estante</label>
-                            <input type="number" class="form-control form-control-sm" id="estante">
+                            <input type="text" class="form-control form-control-sm" id="estante" maxlength="100" name="estante">
                         </div>
                     </div>
                     <div class="mb-3">
