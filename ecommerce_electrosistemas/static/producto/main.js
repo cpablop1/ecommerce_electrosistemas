@@ -2,6 +2,8 @@
 import { listar } from "./listar.js";
 import { editar } from "./editar.js"; */
 import { select_marcas } from "./select_marcas.js";
+import { select_categorias } from "./select_categorias.js";
+import { validacion } from "./validacion.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
@@ -21,6 +23,7 @@ document.getElementById('agregar').addEventListener('click', () => {
     setTimeout(() => { // Despues de haber cargado el formulario enfocamos el campo "nombre"
         document.getElementById('descripcion').focus();
         select_marcas();
+        select_categorias();
     }, 500);
 
 });
@@ -28,13 +31,11 @@ document.getElementById('agregar').addEventListener('click', () => {
 // Evento para limpiar datos y enviarlo al servidor
 document.getElementById('form_producto').addEventListener('submit', e => {
     e.preventDefault(); // Anulamos el evento submit del formulario por defecto
-    let nombre = document.getElementById('nombre') // Otenemos el campo nombre
-    if (nombre.value.trim().length === 0) { // Validamos si el formulario no está vacío
-        alert('El campo nombre es obligatorio.');
-        setTimeout(() => nombre.focus(), 500);
-        nombre.classList.add('is-invalid');
-    } else { // Si el formulario es válido llamamos el métedo agregar()
+    let form_valido = validacion(e.target); // llamamos la función para validar el formulario.
+    
+    if (form_valido) { // Validamos si el formulario no está vacío
         agregar(e.target); // Y le pasamos por parámetro el formulario
-        nombre.classList.remove('is-invalid');
+    } else { // Si el formulario es válido llamamos el métedo agregar()
+        alert('Complete el formulario para continuar.');
     }
 });
