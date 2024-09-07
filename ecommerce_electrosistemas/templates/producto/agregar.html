@@ -9,9 +9,14 @@
             </div>
             <div class="modal-body">
                 <form id="form_producto">
+                    {% csrf_token %}
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control form-control-sm" id="descripcion" rows="3" name="descripcion" maxlength="400"></textarea>
+                        <textarea class="form-control form-control-sm" id="descripcion" rows="3" name="descripcion" maxlength="400" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="costo" class="form-label">Costo</label>
+                        <input type="number" class="form-control form-control-sm" id="costo" name="costo">
                     </div>
                     <div class="mb-3 row">
                         <label for="precio_publico" class="form-label">Precios</label>
@@ -44,7 +49,7 @@
                     <div class="mb-3">
                         <div class="col-auto">
                             <label for="id_categoria" class="form-label">Categoría</label>
-                            <select class="form-control form-control-sm" name="id_categoria" id="id_categoria">
+                            <select class="form-control form-control-sm" name="id_categoria" id="id_categoria" required>
                                 <option value="">------ Categoría ------</option>
                             </select>
                         </div>
@@ -52,7 +57,7 @@
                     <div class="mb-3">
                         <div class="col-auto">
                             <label for="id_marca" class="form-label">Marca</label>
-                            <select class="form-control form-control-sm" name="id_marca" id="id_marca">
+                            <select class="form-control form-control-sm" name="id_marca" id="id_marca" required>
                                 <option value="">------ Marca ------</option>
                             </select>
                         </div>

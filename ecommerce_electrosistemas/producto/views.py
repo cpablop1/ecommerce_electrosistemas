@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from .models import Categorias, Marcas
+from .models import Categorias, Marcas, Productos
+from django.contrib.auth.models import User
 
 def VistaProducto(request):
     return render(request, 'producto/producto.html')
@@ -194,5 +195,109 @@ def VerParaEditarMarca(request):
     }
     data['res'] = res
     data['msg'] = msg
+
+    return JsonResponse(data)
+
+def AgregarProducto(request):
+    if request.method == 'POST':
+        # Recoger los datos por POST
+        id = request.POST.get('id', None)
+        descripcion = request.POST.get('descripcion', '').upper()
+        precio_publico = request.POST.get('precio_publico', 0)
+        precio_mayorista = request.POST.get('precio_mayorista', 0)
+        img_1 = request.FILES.get('img_1', None)
+        img_2 = request.FILES.get('img_2', None)
+        estante = request.POST.get('estante', '').upper()
+        id_categoria = request.POST.get('id_categoria', None)
+        id_marca = request.POST.get('id_marca', None)
+
+        # Formateamos los datos obtenidos
+        try:
+            int(id)
+        except:
+            msg = 'Hubo un error al visualizar la categoría.'
+            id = None
+        
+        try:
+            int(id_categoria)
+        except:
+            id_categoria = None
+        
+        try:
+            int(id_marca)
+        except:
+            id_marca = None
+        
+        try:
+            float(precio_publico)
+        except:
+            precio_publico = 0
+        
+        try:
+            float(precio_mayorista)
+        except:
+            precio_mayorista = 0
+
+        # Inicializando las respuestas del servidor
+        res = False
+        msg = ''
+        
+        # Creamos o actulizamos la el objecto Producto
+        producto = Productos.objects.update_or_create(
+            id = id,
+            defaults = {
+                "descripcion": descripcion,
+                "precio_publico": precio_publico,
+                "precio_mayorista": precio_mayorista,
+                "img_1": img_1,
+                "img_2": img_2,
+                "estante": estante,
+                "id_categoria": Categorias.objects.get(id = id_categoria),
+                "id_marca": Marcas.objects.get(id = id_marca),
+                "id_usuario": User.objects.get(id = request.user.id)
+            }
+        )
+
+        # Revisamos si es un nuevo registro o una actualización
+        if producto[1]:
+            res = True
+            msg = 'Producto creada correctamente.'
+        else:
+            res = True
+            msg = 'Producto actualizada correctamente.'
+    
+    # Y finalmente devolvemos una respuesta
+    return JsonResponse({'res': res, 'msg': msg})
+
+def ListarProductos(request):
+    # Inicializamos variables de respuesta
+    data = {}
+    data['data'] = []
+
+    #try:
+    # Instanciar el modelo
+    productos = Productos.objects.all()
+
+    # Preparar el listado de productos
+    for pro in productos:
+        data['data'].append({
+            'id': pro.id,
+            'descripcion': pro.descripcion,
+            'stock': pro.stock,
+            'costo': pro.costo,
+            'precio_publico': pro.precio_publico,
+            'precio_mayorista': pro.precio_mayorista,
+            'img_1': pro.img_1.name,
+            'img_2': pro.img_2.name,
+            'estante': pro.estante,
+            'categoria': pro.id_categoria.nombre,
+            'marca': pro.id_marca.nombre,
+            'usuario': pro.id_usuario.username,
+            'fecha_registro': pro.fecha_registro,
+        })
+    
+    data['res'] = True
+    """ except:
+        data['res'] = False """
 
     return JsonResponse(data)

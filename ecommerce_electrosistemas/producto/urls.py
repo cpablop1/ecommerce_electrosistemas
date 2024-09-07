@@ -12,4 +12,6 @@ urlpatterns = [
     path('agregar-marca/', views.AgregarMarca, name='agregar_marca'),
     path('listar-marcas/', views.ListarMarcas, name='listar_marcas'),
     path('ver-para-editar-marca/', views.VerParaEditarMarca, name='ver_para_editar_marca'),
+    path('agregar-producto/', views.AgregarProducto, name='agregar_producto'),
+    path('listar-productos/', views.ListarProductos, name='listar_productos'),
 ]
