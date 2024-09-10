@@ -1,6 +1,6 @@
 import { agregar } from "./agregar.js";
 import { listar } from "./listar.js";
-/* import { editar } from "./editar.js"; */
+import { editar } from "./editar.js";
 import { select_marcas } from "./select_marcas.js";
 import { select_categorias } from "./select_categorias.js";
 import { validacion } from "./validacion.js";
@@ -11,7 +11,7 @@ window.onload = () => {
 }
 
 window.editar = id => {
-    //editar(id);
+    editar(id);
 }
 
 // Evento para mostrar la ventana modal para crear categorías

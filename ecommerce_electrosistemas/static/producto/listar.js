@@ -4,15 +4,14 @@ export function listar() {
         return res.json(); // Parseamos los datos obtenidos a formato JSON
     }).then(data => {
         let fila = '';
-        console.log(data);
+
         Array.from(data.data, (item, index) => {
             let img = '';
-            console.log(toString(item.img_1));
-            if (item.img_1 !== null) {
-                img = `<img src="../../media/${item.img_1}" alt="" width="50"></img>`
-            } else if (item.img_1.trim() !== '') {
+            
+            if (item.img_1 && item.img_1.trim() !== '') {
                 img = `<img src="../../media/${item.img_1}" alt="" width="50"></img>`
             }
+
             fila += `<tr>
                         <td>${index + 1}</td>
                         <td>${img}</td>
@@ -29,6 +28,8 @@ export function listar() {
                         <td><button type="button" class="btn btn-info btn-sm" onclick="editar(${item.id})"><i class="bi bi-pencil-square"></i></button></td>
                     </tr>`
         });
+
         document.getElementById('tabla_producto').childNodes[3].innerHTML = fila;
+        
     });
 }

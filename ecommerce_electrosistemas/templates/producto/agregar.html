@@ -13,6 +13,7 @@
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripción</label>
                         <textarea class="form-control form-control-sm" id="descripcion" rows="3" name="descripcion" maxlength="400" required></textarea>
+                        <input type="text" id="id" name="id" hidden>
                     </div>
                     <div class="mb-3">
                         <label for="costo" class="form-label">Costo</label>
@@ -34,10 +35,12 @@
                         <div class="col-auto">
                             <label for="img_1" class="form-label">Imágne 1</label>
                             <input accept="image/*" type="file" class="form-control form-control-sm" id="img_1" name="img_1">
+                            <img src="" alt="" style="display: none;" width="100" id="img_1_preview">
                         </div>
                         <div class="col-auto">
                             <label for="img_2" class="form-label">Imágne 2</label>
                             <input accept="image/*" type="file" class="form-control form-control-sm" id="img_2" name="img_2">
+                            <img src="" alt="" style="display: none;" width="100" id="img_2_preview">
                         </div>
                     </div>
                     <div class="mb-3">

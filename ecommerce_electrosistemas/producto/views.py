@@ -200,6 +200,7 @@ def VerParaEditarMarca(request):
 
 def AgregarProducto(request):
     if request.method == 'POST':
+        data = {}
         # Recoger los datos por POST
         id = request.POST.get('id', None)
         descripcion = request.POST.get('descripcion', '').upper()
@@ -243,14 +244,15 @@ def AgregarProducto(request):
         msg = ''
         
         # Creamos o actulizamos la el objecto Producto
+        data['img_1'] = 
         producto = Productos.objects.update_or_create(
             id = id,
-            defaults = {
+            defaults = { """ Hay que restructurar la data si en el caso de que algun parametro esté vacía """
                 "descripcion": descripcion,
                 "precio_publico": precio_publico,
                 "precio_mayorista": precio_mayorista,
-                "img_1": img_1,
-                "img_2": img_2,
+                "img_1": img_1 if img_1 != None else 'NULL',
+                "img_2": img_2 if img_2 != None else 'NULL',
                 "estante": estante,
                 "id_categoria": Categorias.objects.get(id = id_categoria),
                 "id_marca": Marcas.objects.get(id = id_marca),
@@ -299,5 +301,43 @@ def ListarProductos(request):
     data['res'] = True
     """ except:
         data['res'] = False """
+
+    return JsonResponse(data)
+
+def VerParaEditarProducto(request):
+    # Capturamos el id por get
+    id = request.GET.get('id', None)
+    # Variables de inicializacion y de respuesta
+    flag = False
+    res = False
+    msg = ''
+    data = {}
+    # Formateamos el id
+    try:
+        int(id)
+        flag = True
+    except:
+        msg = 'Hubo un error al visualizar la producto.'
+
+    # Comprobamos si es válido el id
+    if flag:
+        producto = Productos.objects.get(id = id)
+    else:
+        msg = 'Hubo un error al visualizar la producto.'
+        
+    data['data'] = {
+        'id': producto.id,
+        'descripcion': producto.descripcion,
+        'costo': producto.costo,
+        'precio_publico': producto.precio_publico,
+        'precio_mayorista': producto.precio_mayorista,
+        'img_1': producto.img_1.name,
+        'img_2': producto.img_2.name,
+        'estante': producto.estante,
+        'id_categoria': producto.id_categoria.id,
+        'id_marca': producto.id_marca.id,
+    }
+    data['res'] = res
+    data['msg'] = msg
 
     return JsonResponse(data)
