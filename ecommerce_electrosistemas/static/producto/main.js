@@ -20,6 +20,14 @@ document.getElementById('agregar').addEventListener('click', () => {
     let form = document.getElementById('form_producto') // Instrucción para obtener el objecto (es decir, el formualario)
     form.reset(); // Limpiamos el formulario obtenido
 
+    document.getElementById('img_1_preview').src = '';
+    document.getElementById('img_1_preview').style.display = 'none';
+
+    document.getElementById('img_2_preview').src = '';
+    document.getElementById('img_2_preview').style.display = 'none';
+
+    document.getElementById('check_img').style.display = 'none';
+
     setTimeout(() => { // Despues de haber cargado el formulario enfocamos el campo "nombre"
         document.getElementById('descripcion').focus();
         select_marcas();

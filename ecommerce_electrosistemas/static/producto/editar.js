@@ -11,6 +11,8 @@ export function editar(id) {
     document.getElementById('img_2_preview').src = '';
     document.getElementById('img_2_preview').style.display = 'none';
 
+    document.getElementById('check_img').style.display = 'none';
+
     select_categorias();
     select_marcas();
 
@@ -25,11 +27,13 @@ export function editar(id) {
         if (data.data.img_1 && data.data.img_1.trim() !== '') {
             document.getElementById('img_1_preview').style.display = 'block';
             document.getElementById('img_1_preview').src = `../../media/${data.data.img_1}`;
+            document.getElementById('check_img').style.display = 'block';
         }
 
         if (data.data.img_2 && data.data.img_2.trim() !== '') {
             document.getElementById('img_2_preview').style.display = 'block';
             document.getElementById('img_2_preview').src = `../../media/${data.data.img_2}`;
+            document.getElementById('check_img').style.display = 'block';
         }
 
         document.getElementById('estante').value = data.data.estante;

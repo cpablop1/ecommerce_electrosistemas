@@ -200,10 +200,10 @@ def VerParaEditarMarca(request):
 
 def AgregarProducto(request):
     if request.method == 'POST':
-        data = {}
         # Recoger los datos por POST
         id = request.POST.get('id', None)
         descripcion = request.POST.get('descripcion', '').upper()
+        costo = request.POST.get('costo', 0)
         precio_publico = request.POST.get('precio_publico', 0)
         precio_mayorista = request.POST.get('precio_mayorista', 0)
         img_1 = request.FILES.get('img_1', None)
@@ -211,6 +211,14 @@ def AgregarProducto(request):
         estante = request.POST.get('estante', '').upper()
         id_categoria = request.POST.get('id_categoria', None)
         id_marca = request.POST.get('id_marca', None)
+
+        check_img_1 = request.POST.get('check_img_1')
+        check_img_2 = request.POST.get('check_img_2')
+
+        print('-----------------')
+        print(f'check_img_1 {type(check_img_1)}')
+        print(f'check_img_2 {type(check_img_2)}')
+        print('-----------------')
 
         # Formateamos los datos obtenidos
         try:
@@ -244,20 +252,34 @@ def AgregarProducto(request):
         msg = ''
         
         # Creamos o actulizamos la el objecto Producto
-        data['img_1'] = 
+        data = {
+            "descripcion": descripcion,
+            "costo": costo,
+            "precio_publico": precio_publico,
+            "precio_mayorista": precio_mayorista,
+            "estante": estante,
+            "id_categoria": Categorias.objects.get(id = id_categoria),
+            "id_marca": Marcas.objects.get(id = id_marca),
+        }
+        if img_1 != None:
+            data['img_1'] = img_1
+
+        if img_2 != None:
+            data['img_2'] = img_2
+
+        if check_img_1 != None and id != None:
+            data['img_1'] = 'NULL'
+        
+        if check_img_2 != None and id != None:
+            data['img_2'] = 'NULL'
+
+
+        if id == None:
+            data['id_usuario'] = User.objects.get(id = request.user.id)
+
         producto = Productos.objects.update_or_create(
             id = id,
-            defaults = { """ Hay que restructurar la data si en el caso de que algun parametro esté vacía """
-                "descripcion": descripcion,
-                "precio_publico": precio_publico,
-                "precio_mayorista": precio_mayorista,
-                "img_1": img_1 if img_1 != None else 'NULL',
-                "img_2": img_2 if img_2 != None else 'NULL',
-                "estante": estante,
-                "id_categoria": Categorias.objects.get(id = id_categoria),
-                "id_marca": Marcas.objects.get(id = id_marca),
-                "id_usuario": User.objects.get(id = request.user.id)
-            }
+            defaults = data
         )
 
         # Revisamos si es un nuevo registro o una actualización
