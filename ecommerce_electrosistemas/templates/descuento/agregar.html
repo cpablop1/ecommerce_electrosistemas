@@ -1,0 +1,39 @@
+<!-- Modal -->
+<div class="modal fade" id="modal_descuento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Agregar descuentos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form_descuento">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="fecha_inicio" class="form-label">Fecha incial</label>
+                        <input type="date" class="form-control form-control-sm" id="fecha_inicio" name="fecha_inicio">
+                        <input type="text" id="id" name="id" hidden>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_final" class="form-label">Fecha final</label>
+                        <input type="date" class="form-control form-control-sm" id="fecha_final" name="fecha_final">
+                    </div>
+                    <div class="mb-3">
+                        <label for="porcentaje" class="form-label">Porcentaje</label>
+                        <input type="number" class="form-control form-control-sm" id="porcentaje" name="porcentaje">
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_producto" class="form-label">Producto</label>
+                        <select class="form-control form-control-sm" name="id_producto" id="id_producto"></select>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" class="btn btn-primary" value="Guardar">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,6 +13,9 @@ def VistaCategoria(request):
 def VistaMarca(request):
     return render(request, 'marca/marca.html')
 
+def VistaDescuento(request):
+    return render(request, 'descuento/descuento.html')
+
 def AgregarCategoria(request):
     if request.method == 'POST':
         # Recoger los datos por POST
