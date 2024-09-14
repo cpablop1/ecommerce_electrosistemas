@@ -17,7 +17,7 @@ export function editar(id) {
     select_marcas();
 
     fetch(`/producto/ver-para-editar-producto?id=${id}`).then(res => res.json()).then(data => {
-        console.log(data);
+
         document.getElementById('id').value = data.data.id;
         document.getElementById('descripcion').value = data.data.descripcion;
         document.getElementById('costo').value = data.data.costo;
@@ -37,8 +37,10 @@ export function editar(id) {
         }
 
         document.getElementById('estante').value = data.data.estante;
-        document.getElementById('id_categoria').value = data.data.id_categoria;
-        document.getElementById('id_marca').value = data.data.id_marca;
+        setTimeout(()=>{
+            document.getElementById('id_categoria').value = data.data.id_categoria;
+            document.getElementById('id_marca').value = data.data.id_marca;
+        }, 500);
 
         new bootstrap.Modal(document.getElementById('modal_producto')).show();
     });

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from .models import Categorias, Marcas, Productos
+from .models import Categorias, Marcas, Productos, Descuentos
 from django.contrib.auth.models import User
 
 def VistaProducto(request):
@@ -301,31 +301,31 @@ def ListarProductos(request):
     data = {}
     data['data'] = []
 
-    #try:
-    # Instanciar el modelo
-    productos = Productos.objects.all()
+    try:
+        # Instanciar el modelo
+        productos = Productos.objects.all()
 
-    # Preparar el listado de productos
-    for pro in productos:
-        data['data'].append({
-            'id': pro.id,
-            'descripcion': pro.descripcion,
-            'stock': pro.stock,
-            'costo': pro.costo,
-            'precio_publico': pro.precio_publico,
-            'precio_mayorista': pro.precio_mayorista,
-            'img_1': pro.img_1.name,
-            'img_2': pro.img_2.name,
-            'estante': pro.estante,
-            'categoria': pro.id_categoria.nombre,
-            'marca': pro.id_marca.nombre,
-            'usuario': pro.id_usuario.username,
-            'fecha_registro': pro.fecha_registro,
-        })
-    
-    data['res'] = True
-    """ except:
-        data['res'] = False """
+        # Preparar el listado de productos
+        for pro in productos:
+            data['data'].append({
+                'id': pro.id,
+                'descripcion': pro.descripcion,
+                'stock': pro.stock,
+                'costo': pro.costo,
+                'precio_publico': pro.precio_publico,
+                'precio_mayorista': pro.precio_mayorista,
+                'img_1': pro.img_1.name,
+                'img_2': pro.img_2.name,
+                'estante': pro.estante,
+                'categoria': pro.id_categoria.nombre,
+                'marca': pro.id_marca.nombre,
+                'usuario': pro.id_usuario.username,
+                'fecha_registro': pro.fecha_registro,
+            })
+        
+        data['res'] = True
+    except:
+        data['res'] = False
 
     return JsonResponse(data)
 
@@ -361,6 +361,111 @@ def VerParaEditarProducto(request):
         'estante': producto.estante,
         'id_categoria': producto.id_categoria.id,
         'id_marca': producto.id_marca.id,
+    }
+    data['res'] = res
+    data['msg'] = msg
+
+    return JsonResponse(data)
+
+def AgregarDescuento(request):
+    if request.method == 'POST':
+        # Recoger los datos por POST
+        id = request.POST.get('id', None)
+        fecha_inicio = request.POST.get('fecha_inicio', '')
+        fecha_final = request.POST.get('fecha_final', '')
+        porcentaje = request.POST.get('porcentaje', 0)
+        id_producto = request.POST.get('id_producto', None)
+
+        # Formateamos el id
+        try:
+            int(id)
+        except:
+            msg = 'Hubo un error al visualizar la descuento.'
+            id = None
+
+        # Inicializando las respuestas del servidor
+        res = False
+        msg = ''
+        
+        # Creamos o actulizamos la el objecto Descuento
+        descuento = Descuentos.objects.update_or_create(
+            id = id,
+            defaults = {
+                "fecha_inicio": fecha_inicio,
+                "fecha_final": fecha_final,
+                "porcentaje": porcentaje,
+                "id_producto": Productos.objects.get(id = id_producto),
+                "id_usuario": User.objects.get(id = request.user.id),
+            }
+        )
+
+        # Revisamos si es un nuevo registro o una actualización
+        if descuento[1]:
+            res = True
+            msg = 'Descuento creada correctamente.'
+        else:
+            res = True
+            msg = 'Descuento actualizada correctamente.'
+    
+    # Y finalmente devolvemos una respuesta
+    return JsonResponse({'res': res, 'msg': msg})
+
+def ListarDescuentos(request):
+    # Inicializamos variables de respuesta
+    data = {}
+    data['data'] = []
+
+    try:
+        # Instanciar el modelo
+        descuentos = Descuentos.objects.all()
+
+        # Preparar el listado de descuentos
+        for des in descuentos:
+            data['data'].append({
+                'id': des.id,
+                'fecha_inicio': des.fecha_inicio,
+                'fecha_final': des.fecha_final,
+                'porcentaje': des.porcentaje,
+                'producto': des.id_producto.descripcion,
+                'usuario': des.id_usuario.username,
+                'estado': des.estado,
+                'fecha_registro': des.fecha_registro,
+            })
+        
+        data['res'] = True
+    except:
+        data['res'] = False
+
+    return JsonResponse(data)
+
+def VerParaEditarDescuento(request):
+    # Capturamos el id por get
+    id = request.GET.get('id', None)
+    # Variables de inicializacion y de respuesta
+    flag = False
+    res = False
+    msg = ''
+    data = {}
+    # Formateamos el id
+    try:
+        int(id)
+        flag = True
+    except:
+        msg = 'Hubo un error al visualizar la descuento.'
+
+    # Comprobamos si es válido el id
+    if flag:
+        descuento = Descuentos.objects.get(id = id)
+    else:
+        msg = 'Hubo un error al visualizar la descuento.'
+        
+    data['data'] = {
+        'id': descuento.id,
+        'fecha_inicio': descuento.fecha_inicio,
+        'fecha_final': descuento.fecha_final,
+        'estado': descuento.estado,
+        'porcentaje': descuento.porcentaje,
+        'id_producto': descuento.id_producto.id
     }
     data['res'] = res
     data['msg'] = msg

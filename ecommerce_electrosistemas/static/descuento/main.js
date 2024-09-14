@@ -1,16 +1,16 @@
-/* import { agregar } from "./agregar.js";
+import { agregar } from "./agregar.js";
 import { listar } from "./listar.js";
-import { editar } from "./editar.js"; */
+import { editar } from "./editar.js";
 import { select_productos } from "./select_productos.js";
 import { validacion } from "./validacion.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
-    //listar();
+    listar();
 }
 
 window.editar = id => {
-    //editar(id);
+    editar(id);
 }
 
 // Evento para mostrar la ventana modal para crear categorías
@@ -24,6 +24,10 @@ document.getElementById('agregar').addEventListener('click', () => {
 // Evento para limpiar datos y enviarlo al servidor
 document.getElementById('form_descuento').addEventListener('submit', e => {
     e.preventDefault(); // Anulamos el evento submit del formulario por defecto
-    let nombre = document.getElementById('nombre') // Otenemos el campo nombre
+
     let validar = validacion(e.target);
+    
+    if(validar) {
+        agregar(e.target);
+    }
 });
