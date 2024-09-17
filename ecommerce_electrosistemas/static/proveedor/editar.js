@@ -1,11 +1,17 @@
 export function editar(id) {
-    let form = document.getElementById('form_categoria');
+    let form = document.getElementById('form_proveedor');
     form.reset();
-    fetch(`/producto/ver-para-editar-categoria?id=${id}`).then(res => res.json()).then(data => {
-        document.getElementById('nombre').value = data.data.nombre;
+    fetch(`/compra/ver-para-editar-proveedor?id=${id}`).then(res => res.json()).then(data => {
         document.getElementById('id').value = data.data.id;
-        document.getElementById('descripcion').value = data.data.descripcion;
+        document.getElementById('nombres').value = data.data.nombres;
+        document.getElementById('apellidos').value = data.data.apellidos;
+        document.getElementById('nit').value = data.data.nit;
+        document.getElementById('dpi').value = data.data.dpi;
+        document.getElementById('empresa').value = data.data.empresa;
+        document.getElementById('telefono').value = data.data.telefono;
+        document.getElementById('direccion').value = data.data.direccion;
+        document.getElementById('observaciones').value = data.data.observaciones;
 
-        new bootstrap.Modal(document.getElementById('modal_categoria')).show();
+        new bootstrap.Modal(document.getElementById('modal_proveedor')).show();
     });
 }

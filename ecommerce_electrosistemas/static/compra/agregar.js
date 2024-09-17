@@ -3,7 +3,7 @@ import { listar } from "./listar.js";
 export function agregar(formulario) {
     let data = new FormData(formulario); // Creamos un objeto FormDato para enviarlo a servidor
 
-    fetch('/compra/agregar-proveedor/', {
+    fetch('/producto/agregar-categoria/', {
         method: 'POST',
         body: data, // El cuerpo de la peticion enviamos el fulumario formateado
         headers: {
@@ -14,7 +14,7 @@ export function agregar(formulario) {
     }).then((res) => {
         if (res.res) { // Si la respuesta fue exitosa
             formulario.reset(); // Limpiamos el formulario
-            bootstrap.Modal.getInstance(document.getElementById('modal_proveedor')).hide(); // Y Ocultamos la ventana modal
+            bootstrap.Modal.getInstance(document.getElementById('modal_categoria')).hide(); // Y Ocultamos la ventana modal
             listar();
             alert(res.msg);
         } else {
@@ -22,7 +22,7 @@ export function agregar(formulario) {
         }
     }).catch(error => { // Si la petición tuvo problemas
         console.log(error);
-        alert('Hubo un error al registrar el proveedor');
+        alert('Hubo un error al registrar el categoria');
     });
 
 }
