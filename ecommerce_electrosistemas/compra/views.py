@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from .models import Proveedores
 from django.contrib.auth.models import User
 
+import json
+
 def VistaProveedor(request):
     return render(request, 'proveedor/proveedor.html')
 
@@ -128,3 +130,13 @@ def VerParaEditarProveedor(request):
     data['msg'] = msg
 
     return JsonResponse(data)
+
+def AgregarCompra(request):
+    if request.method == 'POST':
+        # Deserializar el cuerpo de la solicitud JSON
+        data = json.loads(request.body)
+        producto = data.get('producto', None)
+        print('-------------------------------')
+        print(producto)
+        print('-------------------------------')
+    return JsonResponse({'res': True})

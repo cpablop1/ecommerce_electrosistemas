@@ -1,6 +1,7 @@
-/* import { agregar } from "./agregar.js"; */
 /* import { listar } from "./listar.js"; */
 /* import { editar } from "./editar.js"; */
+import { agregar } from "./agregar.js";
+import { listar_productos } from "./listar_productos.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
@@ -16,6 +17,20 @@ document.getElementById('agregar').addEventListener('click', () => {
     new bootstrap.Modal(document.getElementById('modal_compra')).show(); // Instrucción para mostrar la modal
     let form = document.getElementById('form_compra') // Instrucción para obtener el objecto (es decir, el formualario)
     form.reset(); // Limpiamos el formulario obtenido
+});
+
+// Evento para mostrar la modal de agregar productos al carrito
+document.getElementById('agregar_producto').addEventListener('click', e => {
+    new bootstrap.Modal(document.getElementById('modal_agregar_producto')).show();
+    listar_productos();
+});
+
+// Evento para saber a que fila el usurio dio click para agregar el producto en el carrito
+document.getElementById('tabla_agregar_producto').addEventListener('click', e => {
+    let producto = e.target.parentNode.getAttribute('producto');
+    if(producto){
+        agregar({'producto': producto});
+    }
 });
 
 // Evento para limpiar datos y enviarlo al servidor
