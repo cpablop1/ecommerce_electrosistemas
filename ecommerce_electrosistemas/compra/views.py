@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from .models import Proveedores
+from .models import Proveedores, Compras, DetalleCompras
+from producto.models import Productos
 from django.contrib.auth.models import User
 
 import json
@@ -135,8 +136,59 @@ def AgregarCompra(request):
     if request.method == 'POST':
         # Deserializar el cuerpo de la solicitud JSON
         data = json.loads(request.body)
-        producto = data.get('producto', None)
+        id_producto = data.get('id_producto', None)
+        id_compra = data.get('id_compra', None)
+        id_proveedor = data.get('id_proveedor', None)
+        cantidad = data.get('cantidad', 0)
+        # Formatear dato capturados por POST
+        try:
+            int(id_producto)
+        except:
+            id_producto = None
+
+        try:
+            int(id_compra)
+        except:
+            id_compra = None
+        try:
+            int(cantidad)
+        except:
+            cantidad = 0
+        try:
+            int(id_proveedor)
+        except:
+            id_proveedor = None
+        # Variables de respuesta
+        msg = ''
+        res = False
+        producto = None
         print('-------------------------------')
-        print(producto)
+        print(id_producto)
         print('-------------------------------')
+        # Obtenemos del producto
+        try:
+            producto = Productos.objects.get(id = id_producto)
+        except:
+            msg = 'Hay problemas al obtener el producto'
+            res = False
+        if id_compra is None:
+            # Crear la compra
+            compra = Compras.objects.update_or_create(
+                id = id_compra,
+                defaults = {
+                    'subtotal': producto.costo,
+                    'id_proveedor': Proveedores.objects.get(id = id_proveedor),
+                    'id_usuario': User.objects.get(id = request.user.id)
+                }
+            )
+            # Crear el detalle de compra
+            detalle_compra = DetalleCompras.objects.create(
+                cantidad = cantidad,
+                costo = producto.costo,
+                total = producto.costo,
+                id_producto = producto,
+                id_compra = compra
+            )
+            detalle_compra.save()
+
     return JsonResponse({'res': True})

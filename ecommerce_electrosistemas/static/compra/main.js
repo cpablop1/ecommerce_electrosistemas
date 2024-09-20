@@ -2,6 +2,7 @@
 /* import { editar } from "./editar.js"; */
 import { agregar } from "./agregar.js";
 import { listar_productos } from "./listar_productos.js";
+import { select_proveedores } from "./select_proveedores.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
@@ -17,6 +18,7 @@ document.getElementById('agregar').addEventListener('click', () => {
     new bootstrap.Modal(document.getElementById('modal_compra')).show(); // Instrucción para mostrar la modal
     let form = document.getElementById('form_compra') // Instrucción para obtener el objecto (es decir, el formualario)
     form.reset(); // Limpiamos el formulario obtenido
+    setTimeout(select_proveedores(), 500);
 });
 
 // Evento para mostrar la modal de agregar productos al carrito
@@ -29,7 +31,7 @@ document.getElementById('agregar_producto').addEventListener('click', e => {
 document.getElementById('tabla_agregar_producto').addEventListener('click', e => {
     let producto = e.target.parentNode.getAttribute('producto');
     if(producto){
-        agregar({'producto': producto});
+        agregar({'id_producto': producto});
     }
 });
 
