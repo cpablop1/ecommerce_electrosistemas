@@ -139,7 +139,7 @@ def AgregarCompra(request):
         id_producto = data.get('id_producto', None)
         id_compra = data.get('id_compra', None)
         id_proveedor = data.get('id_proveedor', None)
-        cantidad = data.get('cantidad', 0)
+        _cantidad = data.get('cantidad', 1)
         # Formatear dato capturados por POST
         try:
             int(id_producto)
@@ -151,9 +151,9 @@ def AgregarCompra(request):
         except:
             id_compra = None
         try:
-            int(cantidad)
+            int(_cantidad)
         except:
-            cantidad = 0
+            _cantidad = 1
         try:
             int(id_proveedor)
         except:
@@ -163,7 +163,7 @@ def AgregarCompra(request):
         res = False
         producto = None
         print('-------------------------------')
-        print(id_producto)
+        print(id_proveedor)
         print('-------------------------------')
         # Obtenemos del producto
         try:
@@ -183,12 +183,45 @@ def AgregarCompra(request):
             )
             # Crear el detalle de compra
             detalle_compra = DetalleCompras.objects.create(
-                cantidad = cantidad,
+                cantidad = _cantidad,
                 costo = producto.costo,
                 total = producto.costo,
                 id_producto = producto,
-                id_compra = compra
+                id_compra = compra[0]
             )
             detalle_compra.save()
 
     return JsonResponse({'res': True})
+
+def ListarDetalleCompras(request):
+    # Inicializamos variables de respuesta
+    data = {}
+    data['data'] = []
+
+    try:
+        # Instanciar el modelo
+        compra = Compras.objects.filter(id_usuario = request.user.id)
+        print('----------------------------')
+        print(compra[0].id)
+        print('----------------------------')
+        detalle_compra = DetalleCompras.objects.filter(id_compra = compra[0].id)
+
+        # Preparar el listado de categorías
+        for dc in detalle_compra:
+            data['data'].append({
+                'id': dc.id,
+                'cantidad': dc.cantidad,
+                'costo': dc.costo,
+                'total': dc.total,
+                'id_producto': dc.id_producto.descripcion,
+                'marca': dc.id_producto.id_marca.nombre,
+                'precio_publico': dc.id_producto.precio_publico,
+                'precio_mayorista': dc.id_producto.precio_mayorista,
+                'id_compra': dc.id_compra.id,
+            })
+        
+        data['res'] = True
+    except:
+        data['res'] = False
+
+    return JsonResponse(data)

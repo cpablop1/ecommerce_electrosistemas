@@ -5,7 +5,7 @@ export function select_proveedores() {
     }).then(data => { // Capturar los datos convertidos anteriormente
         document.getElementById('proveedor').innerHTML = ''; // Limpiamos el select
         //document.getElementById('proveedor').add(new Option('----- Seleccione proveedor -----', '')); // Agregamos el primer item
-        console.log(data.data);
+        
         Array.from(data.data, (item, index) => { // Recorrer el listado de marcas
             document.getElementById('proveedor').add(new Option(`${item.nombres} ${item.apellidos} ${item.empresa}`, item.id)); // Y con ello crear un option para el select
         });

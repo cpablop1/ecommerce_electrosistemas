@@ -1,4 +1,5 @@
 /* import { listar } from "./listar.js"; */
+import { listar_detalle_compras } from "./listar_detalle_compras.js";
 
 export function agregar(data) {
     //let form_data = new FormData(data); // Creamos un objeto FormDato para enviarlo a servidor
@@ -15,6 +16,7 @@ export function agregar(data) {
     }).then((res) => {
         if (res.res) { // Si la respuesta fue exitosa
             //listar();
+            listar_detalle_compras();
             alert(res.msg);
         } else {
             alert('Hubo un en el servidor'); // Caso contrario lanzamos una alerta
