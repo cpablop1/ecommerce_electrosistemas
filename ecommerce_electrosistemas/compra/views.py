@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
+from django.db import IntegrityError, transaction
+
 from .models import Proveedores, Compras, DetalleCompras
 from producto.models import Productos
 from django.contrib.auth.models import User
@@ -137,7 +139,7 @@ def AgregarCompra(request):
         # Deserializar el cuerpo de la solicitud JSON
         data = json.loads(request.body)
         id_producto = data.get('id_producto', None)
-        id_compra = data.get('id_compra', None)
+        # id_compra = data.get('id_compra', None)
         id_proveedor = data.get('id_proveedor', None)
         _cantidad = data.get('cantidad', 1)
         # Formatear dato capturados por POST
@@ -145,11 +147,6 @@ def AgregarCompra(request):
             int(id_producto)
         except:
             id_producto = None
-
-        try:
-            int(id_compra)
-        except:
-            id_compra = None
         try:
             int(_cantidad)
         except:
@@ -162,34 +159,47 @@ def AgregarCompra(request):
         msg = ''
         res = False
         producto = None
-        print('-------------------------------')
-        print(id_proveedor)
-        print('-------------------------------')
         # Obtenemos del producto
         try:
             producto = Productos.objects.get(id = id_producto)
         except:
             msg = 'Hay problemas al obtener el producto'
             res = False
-        if id_compra is None:
-            # Crear la compra
-            compra = Compras.objects.update_or_create(
-                id = id_compra,
-                defaults = {
-                    'subtotal': producto.costo,
-                    'id_proveedor': Proveedores.objects.get(id = id_proveedor),
-                    'id_usuario': User.objects.get(id = request.user.id)
-                }
-            )
-            # Crear el detalle de compra
-            detalle_compra = DetalleCompras.objects.create(
-                cantidad = _cantidad,
-                costo = producto.costo,
-                total = producto.costo,
-                id_producto = producto,
-                id_compra = compra[0]
-            )
-            detalle_compra.save()
+        # Otenemos alguna compra activa (estado = false)
+        try:
+            compra = Compras.objects.filter(id_usuario = request.user.id, estado = False)
+        except:
+            msg = 'Hay problemas con el proceso de la compra'
+            res = False
+
+        print('------------------------')
+        print(compra)
+        print('------------------------')
+        if not compra:
+            with transaction.atomic(savepoint=False):
+                try:
+                    # Crear la compra
+                    crear_compra = Compras.objects.create(
+                        subtotal = producto.costo,
+                        id_proveedor =  Proveedores.objects.get(id = id_proveedor),
+                        id_usuario = User.objects.get(id = request.user.id)
+                    )
+                    #crear_compra.save()
+                    # Crear el detalle de compra
+                    DetalleCompras.objects.create(
+                        cantidad = _cantidad,
+                        costo = producto.costo,
+                        total = producto.costo,
+                        id_producto = producto,
+                        id_compra = crear_compra[0]
+                    )
+                    #detalle_compra.save()
+                except Exception as e:
+                    print('Hubo un error a crear la compra.')
+                    transaction.set_rollback(True)
+                    raise
+        else:
+            print('\nHay una compra activa\n')
 
     return JsonResponse({'res': True})
 
@@ -200,7 +210,7 @@ def ListarDetalleCompras(request):
 
     try:
         # Instanciar el modelo
-        compra = Compras.objects.filter(id_usuario = request.user.id)
+        compra = Compras.objects.filter(id_usuario = request.user.id, estado = False)
         print('----------------------------')
         print(compra[0].id)
         print('----------------------------')
