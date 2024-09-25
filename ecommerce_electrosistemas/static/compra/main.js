@@ -34,7 +34,7 @@ document.getElementById('tabla_agregar_producto').addEventListener('click', e =>
     let producto = e.target.parentNode.getAttribute('producto');
     let proveedor = document.getElementById('proveedor');
     if(producto){
-        agregar({'id_producto': producto, 'id_proveedor': proveedor.value});
+        agregar({'id_producto': producto, 'id_proveedor': proveedor.value, 'cantidad': 1});
     }
 });
 

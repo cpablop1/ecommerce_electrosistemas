@@ -17,7 +17,7 @@ export function agregar(data) {
         if (res.res) { // Si la respuesta fue exitosa
             //listar();
             listar_detalle_compras();
-            alert(res.msg);
+            //alert(res.msg);
         } else {
             alert('Hubo un en el servidor'); // Caso contrario lanzamos una alerta
         }

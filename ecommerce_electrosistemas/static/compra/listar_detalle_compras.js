@@ -4,7 +4,7 @@ export function listar_detalle_compras() {
         return res.json();
     }).then(data => {
         let fila = '';
-        console.log(data.data);
+        console.log(data.subtotal);
         Array.from(data.data, (item, index) => {
             fila += `<tr>
                         <td>${index + 1}</td>
@@ -18,6 +18,7 @@ export function listar_detalle_compras() {
                     </tr>`
         });
         document.getElementById('carrito').childNodes[3].innerHTML = fila;
+        document.getElementById('subtotal').innerText = `Cancelar Q. ${data.subtotal}`;
 
     });
 }

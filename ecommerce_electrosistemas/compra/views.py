@@ -159,6 +159,7 @@ def AgregarCompra(request):
         msg = ''
         res = False
         producto = None
+        data = {}
         # Obtenemos del producto
         try:
             producto = Productos.objects.get(id = id_producto)
@@ -172,36 +173,71 @@ def AgregarCompra(request):
             msg = 'Hay problemas con el proceso de la compra'
             res = False
 
-        print('------------------------')
-        print(compra)
-        print('------------------------')
         if not compra:
-            with transaction.atomic(savepoint=False):
-                try:
-                    # Crear la compra
-                    crear_compra = Compras.objects.create(
-                        subtotal = producto.costo,
-                        id_proveedor =  Proveedores.objects.get(id = id_proveedor),
-                        id_usuario = User.objects.get(id = request.user.id)
-                    )
-                    #crear_compra.save()
-                    # Crear el detalle de compra
-                    DetalleCompras.objects.create(
-                        cantidad = _cantidad,
-                        costo = producto.costo,
-                        total = producto.costo,
-                        id_producto = producto,
-                        id_compra = crear_compra[0]
-                    )
-                    #detalle_compra.save()
-                except Exception as e:
-                    print('Hubo un error a crear la compra.')
-                    transaction.set_rollback(True)
-                    raise
+            #try:
+            # Crear la compra
+            crear_compra = Compras.objects.create(
+                subtotal = producto.costo,
+                id_proveedor =  Proveedores.objects.get(id = id_proveedor),
+                id_usuario = User.objects.get(id = request.user.id)
+            )
+            #crear_compra.save()
+            # Crear el detalle de compra
+            DetalleCompras.objects.create(
+                cantidad = _cantidad,
+                costo = producto.costo,
+                total = producto.costo,
+                id_producto = producto,
+                id_compra = crear_compra
+            )
+            #detalle_compra.save()
+            msg = 'Compra creada correctamente.'
+            res = True
+            """ except Exception as e:
+                print('Hubo un error a crear la compra.')
+                msg = 'Hubo un error a crear la compra.'
+                res = False """
+                #crear_compra.delete()
         else:
-            print('\nHay una compra activa\n')
+            # Primero buscamos si existe el producto en el detalle de compra
+            detalle_compra = DetalleCompras.objects.filter(id_producto = producto.id, id_compra = compra[0].id)
+           
+            if not detalle_compra: # Si no existe el producto en el detalle
+                # Creamos un detalle de compra
+                DetalleCompras.objects.create(
+                    cantidad = _cantidad,
+                    costo = producto.costo,
+                    total = producto.costo,
+                    id_producto = producto,
+                    id_compra = compra[0]
+                )
+                # Y luego actualizamos el subtotal de la compra general
+                compra[0].subtotal = sum(item.total for item in DetalleCompras.objects.filter(id_compra = compra[0].id))
+                compra[0].save()
 
-    return JsonResponse({'res': True})
+                res = True
+            else: # En caso contrario solo actualizamos ese detalle
+                try:
+                    # Actualizamos la cantidad del detalle de compra
+                    detalle_compra[0].cantidad += int(_cantidad)
+                    # Actualizamos el total del detalle de compra
+                    detalle_compra[0].total = int(detalle_compra[0].cantidad) * int(detalle_compra[0].costo)
+                    # Guaradamos los cambios
+                    detalle_compra[0].save()
+                    # Actualizamos el subtotal de la compra general
+                    compra[0].subtotal = sum(item.total for item in DetalleCompras.objects.filter(id_compra = compra[0].id))
+                    compra[0].save()
+        
+                    res = True
+                except:
+                    msg = 'Hubo un error a actualizar el detalle de la compra.'
+                    print('Hubo un error a actualizar el detalle de la compra.')
+                    res = False
+
+        data['res'] = res
+        data['msg'] = msg
+
+    return JsonResponse(data)
 
 def ListarDetalleCompras(request):
     # Inicializamos variables de respuesta
@@ -211,6 +247,7 @@ def ListarDetalleCompras(request):
     try:
         # Instanciar el modelo
         compra = Compras.objects.filter(id_usuario = request.user.id, estado = False)
+        data['subtotal'] = compra[0].subtotal
         print('----------------------------')
         print(compra[0].id)
         print('----------------------------')
