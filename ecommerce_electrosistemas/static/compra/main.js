@@ -17,37 +17,37 @@ window.editar = id => {
 // Evento para mostrar la ventana modal para crear categorías
 document.getElementById('agregar').addEventListener('click', () => {
     new bootstrap.Modal(document.getElementById('modal_compra')).show(); // Instrucción para mostrar la modal
-    let form = document.getElementById('form_compra') // Instrucción para obtener el objecto (es decir, el formualario)
-    form.reset(); // Limpiamos el formulario obtenido
-    listar_detalle_compras();
+    
     setTimeout(select_proveedores(), 500);
+
+    setTimeout(listar_detalle_compras(), 1000);
+    
 });
 
 // Evento para mostrar la modal de agregar productos al carrito
 document.getElementById('agregar_producto').addEventListener('click', e => {
     new bootstrap.Modal(document.getElementById('modal_agregar_producto')).show();
-    listar_productos();
+    listar_productos()
 });
 
 // Evento para saber a que fila el usurio dio click para agregar el producto en el carrito
 document.getElementById('tabla_agregar_producto').addEventListener('click', e => {
     let producto = e.target.parentNode.getAttribute('producto');
     let proveedor = document.getElementById('proveedor');
-    if(producto){
-        agregar({'id_producto': producto, 'id_proveedor': proveedor.value, 'cantidad': 1});
+    if (producto) {
+        agregar({ 'id_producto': producto, 'id_proveedor': proveedor.value });
     }
 });
 
 // Evento para limpiar datos y enviarlo al servidor
-document.getElementById('form_compra').addEventListener('submit', e => {
-    e.preventDefault(); // Anulamos el evento submit del formulario por defecto
-    let nombre = document.getElementById('nombre') // Otenemos el campo nombre
-    if (nombre.value.trim().length === 0) { // Validamos si el formulario no está vacío
-        alert('El campo nombre es obligatorio.');
-        setTimeout(() => nombre.focus(), 500);
-        nombre.classList.add('is-invalid');
-    } else { // Si el formulario es válido llamamos el métedo agregar()
-        agregar(e.target); // Y le pasamos por parámetro el formulario
-        nombre.classList.remove('is-invalid');
+document.getElementById('carrito').addEventListener('keydown', e => {
+    let id_producto = e.target.id;
+    let cantidad = e.target.value;
+    let proveedor = document.getElementById('proveedor').value;
+
+    if (e.keyCode === 13) {
+        if (id_producto) {
+            agregar({ 'id_producto': id_producto, 'id_proveedor': proveedor, 'cantidad': cantidad });
+        }
     }
-});
+})

@@ -141,7 +141,7 @@ def AgregarCompra(request):
         id_producto = data.get('id_producto', None)
         # id_compra = data.get('id_compra', None)
         id_proveedor = data.get('id_proveedor', None)
-        _cantidad = data.get('cantidad', 1)
+        _cantidad = data.get('cantidad', None)
         # Formatear dato capturados por POST
         try:
             int(id_producto)
@@ -150,7 +150,7 @@ def AgregarCompra(request):
         try:
             int(_cantidad)
         except:
-            _cantidad = 1
+            _cantidad = None
         try:
             int(id_proveedor)
         except:
@@ -184,7 +184,7 @@ def AgregarCompra(request):
             #crear_compra.save()
             # Crear el detalle de compra
             DetalleCompras.objects.create(
-                cantidad = _cantidad,
+                cantidad = 1,
                 costo = producto.costo,
                 total = producto.costo,
                 id_producto = producto,
@@ -193,11 +193,7 @@ def AgregarCompra(request):
             #detalle_compra.save()
             msg = 'Compra creada correctamente.'
             res = True
-            """ except Exception as e:
-                print('Hubo un error a crear la compra.')
-                msg = 'Hubo un error a crear la compra.'
-                res = False """
-                #crear_compra.delete()
+    
         else:
             # Primero buscamos si existe el producto en el detalle de compra
             detalle_compra = DetalleCompras.objects.filter(id_producto = producto.id, id_compra = compra[0].id)
@@ -205,7 +201,7 @@ def AgregarCompra(request):
             if not detalle_compra: # Si no existe el producto en el detalle
                 # Creamos un detalle de compra
                 DetalleCompras.objects.create(
-                    cantidad = _cantidad,
+                    cantidad = 1,
                     costo = producto.costo,
                     total = producto.costo,
                     id_producto = producto,
@@ -213,19 +209,24 @@ def AgregarCompra(request):
                 )
                 # Y luego actualizamos el subtotal de la compra general
                 compra[0].subtotal = sum(item.total for item in DetalleCompras.objects.filter(id_compra = compra[0].id))
+                compra[0].id_proveedor = Proveedores.objects.get(id = id_proveedor)
                 compra[0].save()
 
                 res = True
             else: # En caso contrario solo actualizamos ese detalle
                 try:
                     # Actualizamos la cantidad del detalle de compra
-                    detalle_compra[0].cantidad += int(_cantidad)
+                    if _cantidad is None:
+                        detalle_compra[0].cantidad += 1
+                    else:
+                        detalle_compra[0].cantidad = int(_cantidad)
                     # Actualizamos el total del detalle de compra
                     detalle_compra[0].total = int(detalle_compra[0].cantidad) * int(detalle_compra[0].costo)
                     # Guaradamos los cambios
                     detalle_compra[0].save()
                     # Actualizamos el subtotal de la compra general
                     compra[0].subtotal = sum(item.total for item in DetalleCompras.objects.filter(id_compra = compra[0].id))
+                    compra[0].id_proveedor = Proveedores.objects.get(id = id_proveedor)
                     compra[0].save()
         
                     res = True
@@ -248,19 +249,19 @@ def ListarDetalleCompras(request):
         # Instanciar el modelo
         compra = Compras.objects.filter(id_usuario = request.user.id, estado = False)
         data['subtotal'] = compra[0].subtotal
-        print('----------------------------')
-        print(compra[0].id)
-        print('----------------------------')
-        detalle_compra = DetalleCompras.objects.filter(id_compra = compra[0].id)
+        data['id_proveedor'] = compra[0].id_proveedor.id
+        
+        detalle_compra = DetalleCompras.objects.filter(id_compra = compra[0].id).order_by('id')
 
-        # Preparar el listado de categorías
+        # Preparar el listado de detalle de compra
         for dc in detalle_compra:
             data['data'].append({
                 'id': dc.id,
                 'cantidad': dc.cantidad,
                 'costo': dc.costo,
                 'total': dc.total,
-                'id_producto': dc.id_producto.descripcion,
+                'producto': dc.id_producto.descripcion,
+                'id_producto': dc.id_producto.id,
                 'marca': dc.id_producto.id_marca.nombre,
                 'precio_publico': dc.id_producto.precio_publico,
                 'precio_mayorista': dc.id_producto.precio_mayorista,
