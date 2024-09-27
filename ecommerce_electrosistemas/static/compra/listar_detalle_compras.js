@@ -18,6 +18,7 @@ export function listar_detalle_compras() {
         });
 
         document.getElementById('carrito').childNodes[3].innerHTML = fila;
+        document.getElementById('carrito').setAttribute('carrito', data.id_compra);
         document.getElementById('subtotal').innerText = `Cancelar Q. ${data.subtotal}`;
         document.getElementById('proveedor').value = data.id_proveedor;
 

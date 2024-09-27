@@ -240,6 +240,31 @@ def AgregarCompra(request):
 
     return JsonResponse(data)
 
+def ConfirmarCompra(request):
+    if request.method == 'POST':
+        data = json.loads(request.body) # Parseamos el cuerpo de la solicitad a formato JSON
+        id_compra = data.get('id_compra', None) # Buscamos el id de la compra
+
+        # Verificar si el es valido
+        try:
+            int(id_compra)
+        except:
+            id_compra = None
+
+        compra = Compras.objects.get(id = id_compra)
+        if not compra.estado:
+            detalle_compra = DetalleCompras.objects.filter(id_compra = compra.id)
+            print(compra)
+            for item in detalle_compra:
+                item.id_producto.stock += item.cantidad
+                item.id_producto.save()
+            
+            compra.estado = True
+            compra.save()
+
+    return JsonResponse({'res': True})
+
+
 def ListarDetalleCompras(request):
     # Inicializamos variables de respuesta
     data = {}
@@ -250,6 +275,7 @@ def ListarDetalleCompras(request):
         compra = Compras.objects.filter(id_usuario = request.user.id, estado = False)
         data['subtotal'] = compra[0].subtotal
         data['id_proveedor'] = compra[0].id_proveedor.id
+        data['id_compra'] = compra[0].id
         
         detalle_compra = DetalleCompras.objects.filter(id_compra = compra[0].id).order_by('id')
 
@@ -265,7 +291,6 @@ def ListarDetalleCompras(request):
                 'marca': dc.id_producto.id_marca.nombre,
                 'precio_publico': dc.id_producto.precio_publico,
                 'precio_mayorista': dc.id_producto.precio_mayorista,
-                'id_compra': dc.id_compra.id,
             })
         
         data['res'] = True

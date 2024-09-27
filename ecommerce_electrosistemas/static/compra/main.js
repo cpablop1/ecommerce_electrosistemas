@@ -4,6 +4,7 @@ import { agregar } from "./agregar.js";
 import { listar_productos } from "./listar_productos.js";
 import { select_proveedores } from "./select_proveedores.js";
 import { listar_detalle_compras } from "./listar_detalle_compras.js";
+import { confirmar_compra } from "./confirmar_compra.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
@@ -51,3 +52,10 @@ document.getElementById('carrito').addEventListener('keydown', e => {
         }
     }
 })
+
+// Evento para confirmar la compra
+document.getElementById('confirmar_compra').addEventListener('click', e => {
+    let tabla = document.getElementById('carrito');
+    let id_compra = tabla.getAttribute('carrito');
+    confirmar_compra({'id_compra': id_compra});
+});
