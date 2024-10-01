@@ -14,6 +14,7 @@ export function listar_detalle_compras() {
                         <td>${item.precio_publico}</td>
                         <td>${item.precio_mayorista}</td>
                         <td>${item.total}</td>
+                        <td><i class="bi bi-trash3-fill btn btn-danger btn-sm" dt="${item.id}"></i></td>
                     </tr>`
         });
 

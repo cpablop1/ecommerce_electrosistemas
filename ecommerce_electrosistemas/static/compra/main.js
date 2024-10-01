@@ -5,6 +5,7 @@ import { listar_productos } from "./listar_productos.js";
 import { select_proveedores } from "./select_proveedores.js";
 import { listar_detalle_compras } from "./listar_detalle_compras.js";
 import { confirmar_compra } from "./confirmar_compra.js";
+import { eliminar_compra } from "./eliminar_compra.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
@@ -18,11 +19,11 @@ window.editar = id => {
 // Evento para mostrar la ventana modal para crear categorías
 document.getElementById('agregar').addEventListener('click', () => {
     new bootstrap.Modal(document.getElementById('modal_compra')).show(); // Instrucción para mostrar la modal
-    
+
     setTimeout(select_proveedores(), 500);
 
     setTimeout(listar_detalle_compras(), 1000);
-    
+
 });
 
 // Evento para mostrar la modal de agregar productos al carrito
@@ -57,5 +58,24 @@ document.getElementById('carrito').addEventListener('keydown', e => {
 document.getElementById('confirmar_compra').addEventListener('click', e => {
     let tabla = document.getElementById('carrito');
     let id_compra = tabla.getAttribute('carrito');
-    confirmar_compra({'id_compra': id_compra});
+    confirmar_compra({ 'id_compra': id_compra });
+});
+
+// Evento para borrar elementos en el carrito
+document.getElementById('carrito').addEventListener('click', e => {
+    let id = parseInt(e.target.getAttribute('dt'));
+    if (id) {
+        console.log(id);
+        eliminar_compra({'id_detalle_compra': id})
+    }
+});
+
+// Evento para borrar la compra completa
+document.getElementById('vaciar').addEventListener('click', e => {
+    let tabla = document.getElementById('carrito');
+    let id_compra = parseInt(tabla.getAttribute('carrito'));
+
+    if (id_compra) {
+        eliminar_compra({'id_compra': id_compra});
+    }
 });

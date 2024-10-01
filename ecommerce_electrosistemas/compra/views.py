@@ -298,3 +298,52 @@ def ListarDetalleCompras(request):
         data['res'] = False
 
     return JsonResponse(data)
+
+def EliminarCompra(request):
+    if request.method == 'POST':
+        data = json.loads(request.body) # Parseamos el cuerpo de la solicitad a formato JSON
+        id_detalle_compra = data.get('id_detalle_compra', None) # Buscamos el id del detalle de compra
+        id_compra = data.get('id_compra', None) # Buscamos si quiere eliminar todo
+
+        # Datos de respuestas
+        res = False
+        msg = ''
+
+        # Verificar si el es valido
+        try:
+            int(id_detalle_compra)
+        except:
+            id_detalle_compra = None
+        
+        try:
+            id_compra = int(id_compra)
+        except:
+            id_compra = None
+
+        if id_compra:
+            try:
+                compra = Compras.objects.get(id = id_compra)
+                compra.delete()
+
+                res = True
+                msg = 'Compra eliminada correctamente.'
+            except:
+                res = False
+                msg = 'Hubo un error al eliminar la compra.'
+        elif id_detalle_compra:
+            dt = DetalleCompras.objects.get(id = id_detalle_compra)
+            compras = DetalleCompras.objects.filter(id_compra = dt.id_compra)
+           
+            try:
+                if len(compras) == 1:
+                    dt.id_compra.delete()
+                else:
+                    dt.delete()
+
+                res = True
+                msg = 'Elemento eliminado correctamente.'
+            except:
+                res = False
+                msg = 'Hubo un error al eliminar el elemento.'
+
+    return JsonResponse({'res': res, 'msg': msg})
