@@ -27,6 +27,7 @@ urlpatterns = [
     path('', views.VistaPlantillaPrincipal, name='vista_plantilla_principal'),
     path('producto/', include('producto.urls')),
     path('compra/', include('compra.urls')),
+    path('login/', include('login.urls')),
 ]
 
 if settings.DEBUG == False:
