@@ -1,28 +1,28 @@
-import { listar } from "./listar.js";
+/* import { listar } from "./listar.js"; */
 /* import { editar } from "./editar.js"; */
-import { agregar } from "./agregar.js";
+/* import { agregar } from "./agregar.js"; */
 import { listar_productos } from "./listar_productos.js";
-import { select_proveedores } from "./select_proveedores.js";
-import { listar_detalle_compras } from "./listar_detalle_compras.js";
-import { confirmar_compra } from "./confirmar_compra.js";
-import { eliminar_compra } from "./eliminar_compra.js";
+import { select_clientes } from "./select_clientes.js";
+/* import { listar_detalle_compras } from "./listar_detalle_compras.js"; */
+/* import { confirmar_compra } from "./confirmar_compra.js"; */
+/* import { eliminar_compra } from "./eliminar_compra.js"; */
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
-    listar();
+    //listar();
 }
 
 window.editar = id => {
     //editar(id);
 }
 
-// Evento para mostrar la ventana modal para crear categorías
+// Evento para mostrar la ventana modal para agregar venta
 document.getElementById('agregar').addEventListener('click', () => {
-    new bootstrap.Modal(document.getElementById('modal_compra')).show(); // Instrucción para mostrar la modal
+    new bootstrap.Modal(document.getElementById('modal_venta')).show(); // Instrucción para mostrar la modal
 
-    setTimeout(select_proveedores(), 500);
+    setTimeout(select_clientes(), 500);
 
-    setTimeout(listar_detalle_compras(), 1000);
+    //setTimeout(listar_detalle_compras(), 1000);
 
 });
 
@@ -55,11 +55,11 @@ document.getElementById('carrito').addEventListener('keydown', e => {
 })
 
 // Evento para confirmar la compra
-document.getElementById('confirmar_compra').addEventListener('click', e => {
+/* document.getElementById('confirmar_compra').addEventListener('click', e => {
     let tabla = document.getElementById('carrito');
     let id_compra = tabla.getAttribute('carrito');
     confirmar_compra({ 'id_compra': id_compra });
-});
+}); */
 
 // Evento para borrar elementos en el carrito
 document.getElementById('carrito').addEventListener('click', e => {

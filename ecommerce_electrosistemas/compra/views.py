@@ -273,18 +273,28 @@ def ConfirmarCompra(request):
 
 @login_required(login_url='vista_login')
 def ListarDetalleCompras(request):
+    id = request.GET.get('id', None)
+
+    try:
+        int(id)
+    except:
+        id = None
     # Inicializamos variables de respuesta
     data = {}
     data['data'] = []
 
     try:
         # Instanciar el modelo
-        compra = Compras.objects.filter(id_usuario = request.user.id, estado = False)
-        data['subtotal'] = compra[0].subtotal
-        data['id_proveedor'] = compra[0].id_proveedor.id
-        data['id_compra'] = compra[0].id
-        
-        detalle_compra = DetalleCompras.objects.filter(id_compra = compra[0].id).order_by('id')
+        if id:
+            detalle_compra = DetalleCompras.objects.filter(id_compra = id)
+            data['subtotal'] = sum(item.total for item in detalle_compra)
+        else:
+            compra = Compras.objects.filter(id_usuario = request.user.id, estado = False)
+            data['subtotal'] = compra[0].subtotal
+            data['id_proveedor'] = compra[0].id_proveedor.id
+            data['id_compra'] = compra[0].id
+            
+            detalle_compra = DetalleCompras.objects.filter(id_compra = compra[0].id).order_by('id')
 
         # Preparar el listado de detalle de compra
         for dc in detalle_compra:
@@ -355,3 +365,29 @@ def EliminarCompra(request):
                 msg = 'Hubo un error al eliminar el elemento.'
 
     return JsonResponse({'res': res, 'msg': msg})
+
+@login_required(login_url='vista_login')
+def ListarCompras(request):
+    # Inicializamos variables de respuesta
+    data = {}
+    data['data'] = []
+
+    try:
+        # Instanciar el modelo
+        compra = Compras.objects.filter(estado = True)
+    
+        # Preparar el listado de detalle de compra
+        for com in compra:
+            data['data'].append({
+                'id': com.id,
+                'proveedor': f'{com.id_proveedor.nombres} {com.id_proveedor.apellidos} {(com.id_proveedor.empresa if len(com.id_proveedor.empresa) != 0 else "")}',
+                'subtotal': com.subtotal,
+                'usuario': com.id_usuario.username,
+                'fecha': com.fecha_registro,
+            })
+        
+        data['res'] = True
+    except:
+        data['res'] = False
+
+    return JsonResponse(data)

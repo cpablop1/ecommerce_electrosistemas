@@ -1,0 +1,55 @@
+<!-- Modal -->
+<div class="modal fade" id="modal_cliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Agregar clientes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form_cliente">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nombres" class="form-label">Nombres</label>
+                        <input type="text" class="form-control form-control-sm" id="nombres" name="nombres" maxlength="50" required>
+                        <input type="text" id="id" name="id" hidden>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidos" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control form-control-sm" id="apellidos" name="apellidos" maxlength="50" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nit" class="form-label">NIT</label>
+                        <input type="text" class="form-control form-control-sm" id="nit" name="nit" maxlength="15">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cui" class="form-label">CUI</label>
+                        <input type="text" class="form-control form-control-sm" id="cui" name="dpi" maxlength="13">
+                    </div>
+                    <div class="mb-3">
+                        <label for="empresa" class="form-label">Empresa</label>
+                        <input type="text" class="form-control form-control-sm" id="empresa" name="empresa" maxlength="50">
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control form-control-sm" id="telefono" name="telefono" maxlength="20" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" class="form-control form-control-sm" id="direccion" name="direccion" maxlength="100">
+                    </div>
+                    <div class="mb-3">
+                        <label for="observaciones" class="form-label">Observaciones</label>
+                        <textarea class="form-control form-control-sm" name="observaciones" id="observaciones" rows="3"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" class="btn btn-primary" value="Guardar">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

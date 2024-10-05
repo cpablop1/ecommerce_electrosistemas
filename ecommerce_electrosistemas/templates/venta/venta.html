@@ -3,11 +3,11 @@
 {% load static %}
 
 {% block titulo %}
-<i class="bi bi-bag-fill"></i> Compras
+<i class="bi bi-basket2-fill"></i> Ventas
 {% endblock %}
 
 {% block contenido %}
-<table class="table table-striped table-hover" id="tabla_compra">
+<table class="table table-striped table-hover" id="tabla_venta">
     <thead class="table-primary">
         <tr>
             <th>#</th>
@@ -22,12 +22,12 @@
     </tbody>
 </table>
 
-{% include 'compra/agregar.html' %}
-{% include 'compra/agregar_producto.html' %}
-{% include 'compra/detalle_compra.html' %}
+{% include 'venta/agregar.html' %}
+{% include 'venta/agregar_producto.html' %}
+{% include 'venta/detalle_venta.html' %}
 
 {% endblock %}
 
 {% block script %}
-<script type="module" src="{% static 'compra/main.js' %}"></script>
+<script type="module" src="{% static 'venta/main.js' %}"></script>
 {% endblock %}

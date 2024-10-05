@@ -1,9 +1,9 @@
 import { listar_detalle_compras } from "./listar_detalle_compras.js";
 
-export function agregar(data) {
+export function eliminar_compra(data) {
     //let form_data = new FormData(data); // Creamos un objeto FormDato para enviarlo a servidor
 
-    fetch('/compra/agregar-compra/', {
+    fetch('/compra/eliminar-compra/', {
         method: 'POST',
         body: JSON.stringify(data), // El cuerpo de la peticion enviamos el fulumario formateado
         headers: {
@@ -15,13 +15,13 @@ export function agregar(data) {
     }).then((res) => {
         if (res.res) { // Si la respuesta fue exitosa
             listar_detalle_compras();
-            //alert(res.msg);
+            alert(res.msg);
         } else {
-            alert('Hubo un en el servidor'); // Caso contrario lanzamos una alerta
+            alert(res.msg); // Caso contrario lanzamos una alerta
         }
     }).catch(error => { // Si la petición tuvo problemas
         console.log(error);
-        alert('Hubo un error al agregar productos al carrito');
+        alert('Hubo un error al eliminar elementos.');
     });
 
 }

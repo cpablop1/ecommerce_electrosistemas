@@ -12,4 +12,5 @@ urlpatterns = [
     path('listar-detalle-compras/', views.ListarDetalleCompras, name='listar_detalle_compras'),
     path('confirmar-compra/', views.ConfirmarCompra, name='confirmar_compra'),
     path('eliminar-compra/', views.EliminarCompra, name='eliminar_compra'),
+    path('listar-compras/', views.ListarCompras, name='listar_compras'),
 ]
