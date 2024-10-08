@@ -1,9 +1,9 @@
-//import { listar_detalle_compras } from "./listar_detalle_compras.js";
+import { listar_detalle_ventas } from "./listar_detalle_ventas.js";
 
 export function agregar(data) {
     //let form_data = new FormData(data); // Creamos un objeto FormDato para enviarlo a servidor
 
-    fetch('/compra/agregar-compra/', {
+    fetch('/venta/agregar-venta/', {
         method: 'POST',
         body: JSON.stringify(data), // El cuerpo de la peticion enviamos el fulumario formateado
         headers: {
@@ -14,7 +14,7 @@ export function agregar(data) {
         return res.json(); // Convertimos la respuesta del servidor a un objecto JSON
     }).then((res) => {
         if (res.res) { // Si la respuesta fue exitosa
-            //listar_detalle_compras();
+            listar_detalle_ventas();
             //alert(res.msg);
         } else {
             alert('Hubo un en el servidor'); // Caso contrario lanzamos una alerta

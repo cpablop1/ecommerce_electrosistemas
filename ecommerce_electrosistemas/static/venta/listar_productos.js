@@ -10,7 +10,7 @@ export function listar_productos() {
             fila += `<tr role="button" producto="${item.id}">
                         <td>${index + 1}</td>
                         <td>${item.descripcion}</td>
-                        <td>${item.costo}</td>
+                        <td>${item.precio_publico}</td>
                         <td>${item.marca}</td>
                         <td>${item.stock}</td>
                     </tr>`

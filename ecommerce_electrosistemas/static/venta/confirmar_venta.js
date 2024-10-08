@@ -1,9 +1,8 @@
-import { listar_detalle_compras } from "./listar_detalle_compras.js";
+import { listar } from "./listar.js";
 
-export function eliminar_compra(data) {
-    //let form_data = new FormData(data); // Creamos un objeto FormDato para enviarlo a servidor
+export function confirmar_venta(data) {
 
-    fetch('/compra/eliminar-compra/', {
+    fetch('/venta/confirmar-venta/', {
         method: 'POST',
         body: JSON.stringify(data), // El cuerpo de la peticion enviamos el fulumario formateado
         headers: {
@@ -14,14 +13,14 @@ export function eliminar_compra(data) {
         return res.json(); // Convertimos la respuesta del servidor a un objecto JSON
     }).then((res) => {
         if (res.res) { // Si la respuesta fue exitosa
-            listar_detalle_compras();
-            alert(res.msg);
+            listar();
+            bootstrap.Modal.getInstance(document.getElementById('modal_venta')).hide()
         } else {
-            alert(res.msg); // Caso contrario lanzamos una alerta
+            alert('Hubo un en el servidor'); // Caso contrario lanzamos una alerta
         }
     }).catch(error => { // Si la petición tuvo problemas
         console.log(error);
-        alert('Hubo un error al eliminar elementos.');
+        alert('Hubo un error al confirmar la venta');
     });
 
 }
