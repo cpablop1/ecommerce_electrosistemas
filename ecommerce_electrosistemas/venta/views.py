@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 import json
 
-from .models import Clientes, Ventas, DetalleVentas, DetalleSeguimientos
+from .models import Clientes, Ventas, DetalleVentas, Seguimientos, DetalleSeguimientos
 from producto.models import Productos
 
 @login_required(login_url='vista_login')
@@ -149,6 +149,7 @@ def AgregarVenta(request):
         # id_compra = data.get('id_compra', None)
         id_cliente = data.get('id_cliente', None)
         _cantidad = data.get('cantidad', None)
+        id_tipo_pago = data.get('id_tipo_pago', None)
         # Formatear dato capturados por POST
         try:
             int(id_producto)
@@ -162,18 +163,20 @@ def AgregarVenta(request):
             int(id_cliente)
         except:
             id_cliente = None
+        
         # Variables de respuesta
         msg = ''
         res = False
         producto = None
         data = {}
+        
         # Obtenemos del producto
         try:
             producto = Productos.objects.get(id = id_producto)
         except:
             msg = 'Hay problemas al obtener el producto'
             res = False
-        # Otenemos alguna compra activa (estado = false)
+        # Otenemos alguna venta activa (estado = false)
         try:
             venta = Ventas.objects.filter(id_usuario = request.user.id, estado = False)
         except:
@@ -181,65 +184,69 @@ def AgregarVenta(request):
             res = False
 
         if not venta:
-            #try:
-            # Crear la compra
+    
+            # Crear la venta
             crear_venta = Ventas.objects.create(
                 subtotal = producto.precio_publico,
-                id_cliente =  Proveedores.objects.get(id = id_proveedor),
-                id_usuario = User.objects.get(id = request.user.id)
+                id_seguimiento = Seguimientos.objects.get(id = 1),
+                id_cliente = id_cliente,
+                id_usuario = User.objects.get(id = request.user.id),
+                id_tipo_pago = id_tipo_pago
             )
             #crear_compra.save()
-            # Crear el detalle de compra
-            DetalleCompras.objects.create(
+            
+            # Crear el detalle de venta
+            DetalleVentas.objects.create(
                 cantidad = 1,
-                costo = producto.costo,
-                total = producto.costo,
+                precio = producto.precio_publico,
+                total = producto.precio_publico,
                 id_producto = producto,
-                id_compra = crear_compra
+                id_venta = crear_venta
             )
+            
             #detalle_compra.save()
-            msg = 'Compra creada correctamente.'
+            msg = 'Venta creada correctamente.'
             res = True
     
         else:
             # Primero buscamos si existe el producto en el detalle de compra
-            detalle_compra = DetalleCompras.objects.filter(id_producto = producto.id, id_compra = compra[0].id)
+            detalle_venta = DetalleVentas.objects.filter(id_producto = producto.id, id_venta = venta[0].id)
            
-            if not detalle_compra: # Si no existe el producto en el detalle
+            if not detalle_venta: # Si no existe el producto en el detalle
                 # Creamos un detalle de compra
-                DetalleCompras.objects.create(
+                DetalleVentas.objects.create(
                     cantidad = 1,
-                    costo = producto.costo,
-                    total = producto.costo,
+                    precio = producto.precio_publico,
+                    total = producto.precio_publico,
                     id_producto = producto,
-                    id_compra = compra[0]
+                    id_venta = venta[0]
                 )
                 # Y luego actualizamos el subtotal de la compra general
-                compra[0].subtotal = sum(item.total for item in DetalleCompras.objects.filter(id_compra = compra[0].id))
-                compra[0].id_proveedor = Proveedores.objects.get(id = id_proveedor)
-                compra[0].save()
+                venta[0].subtotal = sum(item.total for item in DetalleVentas.objects.filter(id_venta = venta[0].id))
+                venta[0].id_cliente = Clientes.objects.get(id = id_cliente)
+                venta[0].save()
 
                 res = True
             else: # En caso contrario solo actualizamos ese detalle
                 try:
                     # Actualizamos la cantidad del detalle de compra
                     if _cantidad is None:
-                        detalle_compra[0].cantidad += 1
+                        detalle_venta[0].cantidad += 1
                     else:
-                        detalle_compra[0].cantidad = int(_cantidad)
+                        detalle_venta[0].cantidad = int(_cantidad)
                     # Actualizamos el total del detalle de compra
-                    detalle_compra[0].total = int(detalle_compra[0].cantidad) * int(detalle_compra[0].costo)
+                    detalle_venta[0].total = int(detalle_venta[0].cantidad) * int(detalle_venta[0].costo)
                     # Guaradamos los cambios
-                    detalle_compra[0].save()
+                    detalle_venta[0].save()
                     # Actualizamos el subtotal de la compra general
-                    compra[0].subtotal = sum(item.total for item in DetalleCompras.objects.filter(id_compra = compra[0].id))
-                    compra[0].id_proveedor = Proveedores.objects.get(id = id_proveedor)
-                    compra[0].save()
+                    venta[0].subtotal = sum(item.total for item in DetalleVentas.objects.filter(id_compra = venta[0].id))
+                    venta[0].id_cliente = Clientes.objects.get(id = id_cliente)
+                    venta[0].save()
         
                     res = True
                 except:
-                    msg = 'Hubo un error a actualizar el detalle de la compra.'
-                    print('Hubo un error a actualizar el detalle de la compra.')
+                    msg = 'Hubo un error a actualizar el detalle de la venta.'
+                    print('Hubo un error a actualizar el detalle de la venta.')
                     res = False
 
         data['res'] = res
