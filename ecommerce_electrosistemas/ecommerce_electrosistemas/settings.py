@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'compra',
     'venta',
     'login',
+    'ecommerce',
 ]
 
 MIDDLEWARE = [

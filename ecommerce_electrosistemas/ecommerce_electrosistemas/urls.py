@@ -29,6 +29,7 @@ urlpatterns = [
     path('compra/', include('compra.urls')),
     path('venta/', include('venta.urls')),
     path('login/', include('login.urls')),
+    path('ecommerce/', include('ecommerce.urls')),
 ]
 
 if settings.DEBUG == False:
