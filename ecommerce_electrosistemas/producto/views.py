@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Categorias, Marcas, Productos, Descuentos
 from django.contrib.auth.models import User
 
+import json
+
 @login_required(login_url='vista_login')
 def VistaProducto(request):
     return render(request, 'producto/producto.html')
@@ -284,10 +286,10 @@ def AgregarProducto(request):
             data['img_2'] = img_2
 
         if check_img_1 != None and id != None:
-            data['img_1'] = 'NULL'
+            data['img_1'] = ''
         
         if check_img_2 != None and id != None:
-            data['img_2'] = 'NULL'
+            data['img_2'] = ''
 
 
         if id == None:
@@ -311,31 +313,59 @@ def AgregarProducto(request):
 
 @login_required(login_url='vista_login')
 def ListarProductos(request):
+    id = request.GET.get('id', None)
+    try:
+        int(id)
+    except:
+        id = None
+
     # Inicializamos variables de respuesta
     data = {}
     data['data'] = []
 
     try:
-        # Instanciar el modelo
-        productos = Productos.objects.all()
+        if id != None:
+            # Instanciar el modelo
+            productos = Productos.objects.get(id = id)
+            # Preparar el listado de productos
+            print(productos.descripcion)
+            print('ñasjdflkñsajfkdljdj')
+            data['data'] = [{
+                    'id': productos.id,
+                    'descripcion': productos.descripcion,
+                    'stock': productos.stock,
+                    'costo': productos.costo,
+                    'precio_publico': productos.precio_publico,
+                    'precio_mayorista': productos.precio_mayorista,
+                    'img_1': productos.img_1.name,
+                    'img_2': productos.img_2.name,
+                    'estante': productos.estante,
+                    'categoria': productos.id_categoria.nombre,
+                    'marca': productos.id_marca.nombre,
+                    'usuario': productos.id_usuario.username,
+                    'fecha_registro': productos.fecha_registro,
+                }]
+        else:
+            # Instanciar el modelo
+            productos = Productos.objects.all()
+            # Preparar el listado de productos
+            for pro in productos:
+                data['data'].append({
+                    'id': pro.id,
+                    'descripcion': pro.descripcion,
+                    'stock': pro.stock,
+                    'costo': pro.costo,
+                    'precio_publico': pro.precio_publico,
+                    'precio_mayorista': pro.precio_mayorista,
+                    'img_1': pro.img_1.name,
+                    'img_2': pro.img_2.name,
+                    'estante': pro.estante,
+                    'categoria': pro.id_categoria.nombre,
+                    'marca': pro.id_marca.nombre,
+                    'usuario': pro.id_usuario.username,
+                    'fecha_registro': pro.fecha_registro,
+                })
 
-        # Preparar el listado de productos
-        for pro in productos:
-            data['data'].append({
-                'id': pro.id,
-                'descripcion': pro.descripcion,
-                'stock': pro.stock,
-                'costo': pro.costo,
-                'precio_publico': pro.precio_publico,
-                'precio_mayorista': pro.precio_mayorista,
-                'img_1': pro.img_1.name,
-                'img_2': pro.img_2.name,
-                'estante': pro.estante,
-                'categoria': pro.id_categoria.nombre,
-                'marca': pro.id_marca.nombre,
-                'usuario': pro.id_usuario.username,
-                'fecha_registro': pro.fecha_registro,
-            })
         
         data['res'] = True
     except:
