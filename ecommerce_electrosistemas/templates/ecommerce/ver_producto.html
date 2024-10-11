@@ -1,61 +1,62 @@
 <!-- Modal -->
 <div class="modal fade" id="modal_ver_producto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header alert alert-primary">
-                <!-- <h1 class="modal-title" id="staticBackdropLabel"><i class="bi bi-cart-fill"></i> Detalles del producto</h1> -->
-                <!-- <h1><i role="button" id="agregar_producto" class="bi bi-plus-square-fill m-2"></i></h1> -->
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header alert alert-primary">
+        <!-- <h1 class="modal-title" id="staticBackdropLabel"><i class="bi bi-cart-fill"></i> Detalles del producto</h1> -->
+        <!-- <h1><i role="button" id="agregar_producto" class="bi bi-plus-square-fill m-2"></i></h1> -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
 
-                <div class="container">
+        <div class="container">
 
-                    <div class="row mt-5">
-                        <div class="col">
-                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                </div>
-                                <div class="carousel-inner">
-                                  <div class="carousel-item active">
-                                    <img src="./../media/producto/xno497EtBlxzNgoX586WKLpQ2WasHceCnYFkR3v5.jpg" class="d-block mx-auto" alt="..." style="width: 500px; height: auto;">
-                                  </div>
-                                  <div class="carousel-item">
-                                    <img src="./../media/producto/xno497EtBlxzNgoX586WKLpQ2WasHceCnYFkR3v5.jpg" class="d-block mx-auto" alt="..." style="width: 500px; height: auto;">
-                                  </div>
-                                  <div class="carousel-item">
-                                    <img src="./../media/producto/xno497EtBlxzNgoX586WKLpQ2WasHceCnYFkR3v5.jpg" class="d-block mx-auto" alt="..." style="width: 500px; height: auto;">
-                                  </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                  <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                  <span class="visually-hidden">Next</span>
-                                </button>
-                              </div>
-                        </div>
-                        <div class="col">
-                            <h1 id="descripcion_producto">G27i Monitor Gaming 27" Full HD, HDMI y DisplayPort a 165Hz Negro</h1>
-                            <div class="m-5">
-                                <h2 class="bg-light"><b id="precio_producto">Q. 1,358</b></h2>
-                                <h2 class="bg-light"><b id="stock_producto">Existencias: 5</b></h2>
-                                <h2 class="bg-light"><b id="marca_producto">Marca: JBL</b></h2>
-                            </div>
-                            <button class="btn btn-primary w-100 fs-2"><i class="bi bi-cart-fill"></i> Agregar al carrito</button>
-                        </div>
-                    </div>
+          <div class="row mt-5">
+            <div class="col">
+              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators" id="indicador_producto">
+                  <button type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1">
+                  </button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
                 </div>
-
+                <div class="carousel-inner" id="img_producto">
+                  <div class="carousel-item active">
+                    <img src="./../media/producto/xno497EtBlxzNgoX586WKLpQ2WasHceCnYFkR3v5.jpg" class="d-block mx-auto"
+                      alt="..." style="width: 500px; height: auto;">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon bg-primary" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide="next">
+                  <span class="carousel-control-next-icon bg-primary" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
             </div>
-            <div class="modal-footer">
+            <div class="col">
+              <h1 id="descripcion_producto">G27i Monitor Gaming 27" Full HD, HDMI y DisplayPort a 165Hz Negro</h1>
+              <div class="m-5">
+                <h2 class="bg-light"><b id="precio_producto">Q. 1,358</b></h2>
+                <h2 class="bg-light"><b id="stock_producto">Existencias: 5</b></h2>
+                <h2 class="bg-light"><b id="marca_producto">Marca: JBL</b></h2>
+              </div>
+              <button class="btn btn-primary w-100 fs-2"><i class="bi bi-cart-fill"></i> Agregar al carrito</button>
             </div>
+          </div>
         </div>
+
+      </div>
+      <div class="modal-footer">
+      </div>
     </div>
+  </div>
 </div>
