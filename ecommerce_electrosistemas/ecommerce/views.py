@@ -7,3 +7,6 @@ from django.contrib.auth.models import User
 
 def VistaEcommerce(request):
     return render(request, 'ecommerce/ecommerce.html')
+
+def VistaCrearUsuario(request):
+    return render(request, 'ecommerce/crear_usuario.html')

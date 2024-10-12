@@ -311,7 +311,7 @@ def AgregarProducto(request):
     # Y finalmente devolvemos una respuesta
     return JsonResponse({'res': res, 'msg': msg})
 
-@login_required(login_url='vista_login')
+#@login_required(login_url='vista_login')
 def ListarProductos(request):
     id = request.GET.get('id', None)
     try:

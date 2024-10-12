@@ -2,7 +2,7 @@ export function ver_producto(data) {
     let params = new URLSearchParams(data);
 
     fetch(`/producto/listar-productos?${params.toString()}`).then(data => data.json()).then(data => {
-        console.log(data.data[0]);
+
         let img = '';
         let indicador = `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="bg-primary active" aria-current="true" aria-label="Slide 1"></button>`;
         document.getElementById('descripcion_producto').innerHTML = data.data[0].descripcion;
@@ -28,8 +28,9 @@ export function ver_producto(data) {
         }
 
         document.getElementById('indicador_producto').innerHTML = indicador;
-
         document.getElementById('img_producto').innerHTML = img;
+        document.getElementById('agregar_carrito').setAttribute('producto', data.data[0].id);
+
         new bootstrap.Modal(document.getElementById('modal_ver_producto')).show(); // Instrucción para mostrar la modal
 
     });

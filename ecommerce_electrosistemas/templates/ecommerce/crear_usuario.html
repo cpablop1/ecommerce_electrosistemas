@@ -1,0 +1,70 @@
+{% extends 'plantilla_principal/plantilla_ecommerce.html' %}
+
+{% load static %}
+
+{% block contenido %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-6">
+        <form class="shadow-lg p-3 mb-5 bg-body rounded">
+            <h2 class="text-primary text-center"><i class="bi bi-person-circle"></i> Crear usuario</h2>
+            <div class="mb-3">
+                <label for="nombres" class="form-label">Nombre</label>
+                <input type="text" class="form-control form-control-sm" id="nombres" name="nombres" maxlength="50">
+            </div>
+            <div class="mb-3">
+                <label for="apellidos" class="form-label">Apellido</label>
+                <input type="text" class="form-control form-control-sm" id="apellidos" name="apellidos" maxlength="50">
+            </div>
+            <div class="mb-3">
+                <label for="nit" class="form-label">NIT</label>
+                <input type="text" class="form-control form-control-sm" id="nit" name="nit" maxlength="15">
+            </div>
+            <div class="mb-3">
+                <label for="cui" class="form-label">CUI</label>
+                <input type="text" class="form-control form-control-sm" id="cui" name="cui" maxlength="13">
+            </div>
+            <div class="mb-3">
+                <label for="empresa" class="form-label">Empresa</label>
+                <input type="text" class="form-control form-control-sm" id="empresa" name="empresa" maxlength="100">
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="text" class="form-control form-control-sm" id="telefono" name="telefono" maxlength="20">
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control form-control-sm" id="direccion" name="direccion" maxlength="100">
+            </div>
+            <fieldset>
+                <legend class="text-primary">Datos para iniciar sesión:</legend>
+                <div class="border border-primary p-3">
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label text-primary">Usuario</label>
+                        <input type="text" class="form-control form-control-sm border-primary" id="usuario" name="usuario" maxlength="150">
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label text-primary">Correo</label>
+                        <input type="email" class="form-control form-control-sm border-primary" id="correo" name="correo" maxlength="254">
+                    </div>
+                    <div class="mb-3">
+                        <label for="clave" class="form-label text-primary">Contraseña</label>
+                        <input type="password" class="form-control form-control-sm border-primary" id="clave" name="clave" maxlength="128">
+                    </div>
+                    <div class="mb-3">
+                        <label for="clave1" class="form-label text-primary">Comprobar contraseña</label>
+                        <input type="password" class="form-control form-control-sm border-primary" id="clave1" maxlength="128">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+<!-- <script type="module" src="{% static 'js/ecommerce/main.js' %}"></script> -->
+{% endblock %}
