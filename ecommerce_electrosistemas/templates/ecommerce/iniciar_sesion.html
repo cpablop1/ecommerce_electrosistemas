@@ -1,0 +1,37 @@
+{% extends 'plantilla_principal/plantilla_ecommerce.html' %}
+
+{% load static %}
+
+{% block contenido %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-6">
+        <form class="shadow-lg p-3 mb-5 bg-body rounded" id="form_iniciar_sesion">
+            {% csrf_token %}
+            <h2 class="text-primary text-center"><i class="bi bi-door-open-fill"></i> Iniciar sesión</h2>
+            <fieldset>
+                <div class="border border-primary p-3">
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label text-primary">Usuario</label>
+                        <input type="text" class="form-control form-control-sm border-primary" id="usuario"
+                            name="usuario" maxlength="150" autocomplete="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="clave" class="form-label text-primary">Contraseña</label>
+                        <input type="password" class="form-control form-control-sm border-primary" id="clave"
+                            name="clave" maxlength="128" autocomplete="current-password">
+                    </div>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary m-2">Enviar</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script type="module" src="{% static 'js/ecommerce/iniciar_sesion.js' %}"></script>
+{% endblock %}

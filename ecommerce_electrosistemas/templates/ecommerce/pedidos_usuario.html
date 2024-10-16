@@ -1,0 +1,13 @@
+{% extends 'ecommerce/perfil_usuario.html' %}
+
+{% load static %}
+
+
+{% block perfil %}
+<h1>Pedidos</h1>
+<div class="mt-5" id="listar_pedidos">
+    
+</div>
+
+<script type="module" src="{% static 'js/ecommerce/listar_pedidos.js' %}"></script>
+{% endblock %}

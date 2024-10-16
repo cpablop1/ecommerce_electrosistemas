@@ -9,6 +9,7 @@ import json
 
 from .models import Clientes, Ventas, DetalleVentas, Seguimientos, DetalleSeguimientos, TipoPagos
 from producto.models import Productos
+from ecommerce.models import UsuarioCliente
 
 @login_required(login_url='vista_login')
 def VistaCliente(request):
@@ -150,6 +151,7 @@ def AgregarVenta(request):
         id_cliente = data.get('id_cliente', None)
         _cantidad = data.get('cantidad', None)
         id_tipo_pago = data.get('id_tipo_pago', None)
+        buscar_cliente = ''
         # Formatear dato capturados por POST
         try:
             int(id_producto)
@@ -192,7 +194,11 @@ def AgregarVenta(request):
         if id_cliente:
             id_cliente = Clientes.objects.get(id = id_cliente)
         else:
-            id_cliente = Clientes.objects.get(id = 1)
+            buscar_cliente = UsuarioCliente.objects.get(id_usuario = request.user.id)
+            if buscar_cliente:
+                id_cliente = buscar_cliente
+            else:
+                id_cliente = Clientes.objects.get(id = 1)
 
         # Verificamos el tipo de pago
         if id_tipo_pago:
@@ -200,9 +206,6 @@ def AgregarVenta(request):
         else:
             id_tipo_pago = TipoPagos.objects.get(id = 1)
 
-        print('---------------------------')
-        print(venta)
-        print('---------------------------')
         if not venta:
     
             # Crear la venta
@@ -231,7 +234,11 @@ def AgregarVenta(request):
             )
             
             #detalle_compra.save()
-            msg = 'Venta creada correctamente.'
+            if buscar_cliente:
+                msg = 'Producto agregado al carrito.'
+            else:    
+                msg = 'Venta creada correctamente.'
+            
             res = True
     
         else:
@@ -252,6 +259,7 @@ def AgregarVenta(request):
                 venta[0].id_cliente = id_cliente
                 venta[0].save()
 
+                msg = 'Producto agregado al carrito.'
                 res = True
             else: # En caso contrario solo actualizamos ese detalle
                 try:
@@ -268,7 +276,8 @@ def AgregarVenta(request):
                     venta[0].subtotal = sum(item.total for item in DetalleVentas.objects.filter(id_venta = venta[0].id))
                     venta[0].id_cliente = id_cliente
                     venta[0].save()
-        
+
+                    msg = 'Carrito alctualizado, vaya a la carrito para ver detalles.'
                     res = True
                 except:
                     msg = 'Hubo un error a actualizar el detalle de la venta.'
@@ -285,6 +294,7 @@ def ConfirmarVenta(request):
     if request.method == 'POST':
         data = json.loads(request.body) # Parseamos el cuerpo de la solicitad a formato JSON
         id_venta = data.get('id_venta', None) # Buscamos el id de la venta
+        id_tipo_pago = data.get('id_tipo_pago', None) # Buscamos el id del tipo de pago
 
         # Verificar si el id es valido
         try:
@@ -305,6 +315,8 @@ def ConfirmarVenta(request):
                 item.id_producto.save()
             # Y luego cambiamos el estado del pedido a True para indicar que se ha confirmado
             venta.estado = True
+            if id_tipo_pago:
+                venta.id_tipo_pago = TipoPagos.objects.get(id = id_tipo_pago)
             venta.save()
 
     return JsonResponse({'res': True})
@@ -330,6 +342,8 @@ def ListarDetalleVentas(request):
             venta = Ventas.objects.filter(id_usuario = request.user.id, estado = False)
             data['subtotal'] = venta[0].subtotal
             data['id_cliente'] = venta[0].id_cliente.id
+            data['direccion_cliente'] = venta[0].id_cliente.direccion
+            data['telefono_cliente'] = venta[0].id_cliente.telefono
             data['id_venta'] = venta[0].id
             
             detalle_venta = DetalleVentas.objects.filter(id_venta = venta[0].id).order_by('id')
@@ -343,6 +357,7 @@ def ListarDetalleVentas(request):
                 'total': dv.total,
                 'producto': dv.id_producto.descripcion,
                 'id_producto': dv.id_producto.id,
+                'img': dv.id_producto.img_1.name,
                 'marca': dv.id_producto.id_marca.nombre,
                 'precio': dv.precio
             })
@@ -412,10 +427,15 @@ def ListarVentas(request):
     # Inicializamos variables de respuesta
     data = {}
     data['data'] = []
+    # Instanciar el cliente
+    cliente = UsuarioCliente.objects.filter(id_usuario = request.user.id)
 
     try:
         # Instanciar el modelo
-        ventas = Ventas.objects.filter().order_by('id')
+        if cliente:
+            ventas = Ventas.objects.filter(id_usuario = request.user.id).order_by('id')
+        else:
+            ventas = Ventas.objects.filter().order_by('id')
     
         # Preparar el listado de detalle de venta
         for ven in ventas:
@@ -433,5 +453,35 @@ def ListarVentas(request):
         data['res'] = True
     except:
         data['res'] = False
+
+    return JsonResponse(data)
+
+def ListarTipoPagos(request):
+    # Inicializar variables de respuestas
+    data = {}
+    data['data'] = []
+    res = False
+    msg = ''
+
+    try:
+        # Instancia modelo de TipoPago
+        tipo_pago = TipoPagos.objects.all()
+
+        # Estructurar datos datos de respuestas
+        for tp in tipo_pago:
+            data['data'].append(
+                {
+                    'id': tp.id,
+                    'nombre': tp.nombre,
+                    'descricion': tp.descricion
+                }
+            )
+            res = True
+    except:
+        res = False
+        msg = 'Hubo un error a listar los tipos de pago.'
+
+    data['res'] = res
+    data['msg'] = msg
 
     return JsonResponse(data)

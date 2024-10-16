@@ -13,4 +13,5 @@ urlpatterns = [
     path('eliminar-venta/', views.EliminarVenta, name='eliminar_venta'),
     path('confirmar-venta/', views.ConfirmarVenta, name='confirmar_venta'),
     path('listar-ventas/', views.ListarVentas, name='listar_ventas'),
+    path('listar-tipo-pagos/', views.ListarTipoPagos, name='listar_tipo_pagos'),
 ]

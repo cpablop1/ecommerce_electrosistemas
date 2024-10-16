@@ -6,7 +6,8 @@
 
 <div class="row justify-content-center mt-5">
     <div class="col-6">
-        <form class="shadow-lg p-3 mb-5 bg-body rounded">
+        <form class="shadow-lg p-3 mb-5 bg-body rounded" id="form_crear_usuario_cliente">
+            {% csrf_token %}
             <h2 class="text-primary text-center"><i class="bi bi-person-circle"></i> Crear usuario</h2>
             <div class="mb-3">
                 <label for="nombres" class="form-label">Nombre</label>
@@ -41,19 +42,35 @@
                 <div class="border border-primary p-3">
                     <div class="mb-3">
                         <label for="usuario" class="form-label text-primary">Usuario</label>
-                        <input type="text" class="form-control form-control-sm border-primary" id="usuario" name="usuario" maxlength="150">
+                        <input type="text" class="form-control form-control-sm border-primary" id="usuario"
+                            name="usuario" maxlength="150">
+                        <div class="alert alert-danger mt-1" role="alert" style="display: none;">
+                            Ingrese un usuario (juan, cesar, ...)
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="correo" class="form-label text-primary">Correo</label>
-                        <input type="email" class="form-control form-control-sm border-primary" id="correo" name="correo" maxlength="254">
+                        <input type="email" class="form-control form-control-sm border-primary" id="correo"
+                            name="correo" maxlength="254">
+                        <div class="alert alert-danger mt-1" role="alert" style="display: none;">
+                            Ingrese un correo válido. Eje: usuario@gmail.com
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="clave" class="form-label text-primary">Contraseña</label>
-                        <input type="password" class="form-control form-control-sm border-primary" id="clave" name="clave" maxlength="128">
+                        <input type="password" class="form-control form-control-sm border-primary" id="clave"
+                            name="clave" maxlength="128">
+                        <div class="alert alert-danger mt-1" role="alert" style="display: none;">
+                            La contraseña debe contener Masyúscas, minúsculas, números y símbolos. Eje: Juan-194*
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="clave1" class="form-label text-primary">Comprobar contraseña</label>
-                        <input type="password" class="form-control form-control-sm border-primary" id="clave1" maxlength="128">
+                        <input type="password" class="form-control form-control-sm border-primary" id="clave1"
+                            maxlength="128">
+                        <div class="alert alert-danger mt-1" role="alert" style="display: none;">
+                            La constraseña no coincide con la anterior.
+                        </div>
                     </div>
                 </div>
             </fieldset>
@@ -67,5 +84,5 @@
 
 
 {% block script %}
-<!-- <script type="module" src="{% static 'js/ecommerce/main.js' %}"></script> -->
+<script type="module" src="{% static 'js/ecommerce/crear_usuario_cliente.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'plantilla_principal/plantilla_ecommerce.html' %}
+
+{% load static %}
+
+{% block contenido %}
+<div class="text-center mt-5" id="fila_1" hidden>
+    <h1 class="alert alert-primary"><i role="button" class="bi bi-cart4"></i> El carrito está vacío</h1>
+    <p>Ups, parece que no tienes productos agregado en tu carrito. Empieza a comprar</p>
+    <a href="{% url 'vista_ecommerce' %}" class="btn btn-secondary w-50">Empezar a comprar</a>
+</div>
+<div class="row justify-content-center mt-5" id="fila_2" hidden>
+    <h4 class="alert alert-primary"><i role="button" class="bi bi-cart4"></i> Carrito</h4>
+    <div class="col-8">
+        <div class="table-responsive">
+            <table class="table table-hover" id="tabla_carrito">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fw-bold">
+                        <td><img src="../../media/producto/0a22ed54-46d7-40ed-a357-b468c6642cb7.jpg" class="img-fluid"
+                                style="width: 100px;"></td>
+                        <td>Xiaomi Redmi Buds 4 Lite Audífonos Bluetooth Negro</td>
+                        <td>2</td>
+                        <td>Q. 235</td>
+                        <td><i class="bi bi-trash3-fill btn btn-danger btn-sm"></i></td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td><img src="../../media/producto/xno497EtBlxzNgoX586WKLpQ2WasHceCnYFkR3v5.jpg"
+                                class="img-fluid" style="width: 100px;"></td>
+                        <td>Xiaomi Redmi Buds 4 Lite Audífonos Bluetooth Negro</td>
+                        <td>2</td>
+                        <td>Q. 235</td>
+                        <td><i class="bi bi-trash3-fill btn btn-danger btn-sm"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title">Subtotal</h5>
+                    </div>
+                    <div class="col">
+                        <h5 class="card-title text-end" id="subtotal_carrito">Q. 235</h5>
+                        {% csrf_token %}
+                    </div>
+                </div>
+                <hr>
+                <h5 class="card-title">Dirección</h5>
+                <p class="card-text" id="direccion_cliente">Al Final De La Pista De Aterrizaje, Barrio La Libertad
+                    Joyabaj, Quiché
+                    Al Final De La Pista De Aterrizaje</p>
+                <h5 class="card-title">Método de pago</h5>
+                <select id="select_tipo_pago" class="form-select">
+                    <option value="">Efectivo</option>
+                    <option value="">Tarjeta (Débito/Crédito)</option>
+                </select>
+                <h5 class="card-title">Contacto</h5>
+                <p class="card-text" id="telefono_cliente">32568978</p>
+                <button class="btn btn-primary w-100 mt-5" id="confirmar_pedido">Confirmar compra</button>
+                <a href="{% url 'vista_ecommerce' %}" class="btn btn-light w-100 mt-1">Buscar más productos</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<script type="module" src="{% static 'js/ecommerce/carrito.js' %}"></script>
+{% endblock %}

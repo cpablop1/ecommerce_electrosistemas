@@ -1,0 +1,46 @@
+{% extends 'plantilla_principal/plantilla_ecommerce.html' %}
+
+{% load static %}
+
+{% block contenido %}
+<div class="row mt-5">
+    <div class="col-3">
+        <!-- Sidebar -->
+        <div class="bg-light border-end">
+            <div class="sidebar-heading text-center primary-text fs-4 fw-bold text-uppercase">
+                Carlos Zacarías
+            </div>
+            <div class="sidebar-heading text-center mb-3 primary-text fs-6 fw-bold text-uppercase border-bottom">
+                carlos@gmail.com
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{% url 'vista_pedidos_usuario' %}"
+                    class="list-group-item list-group-item-action bg-transparent"><i class="bi bi-box-seam-fill"></i>
+                    Pedidos</a>
+                <a href="{% url 'perfil' %}" class="list-group-item list-group-item-action bg-transparent"><i
+                        class="bi bi-person-lines-fill"></i> Perfil</a>
+                <!-- <a href="#" class="list-group-item list-group-item-action bg-transparent"><i class="bi bi-people-fill me-2"></i>Usuarios</a> -->
+                <!-- <a href="#" class="list-group-item list-group-item-action bg-transparent"><i class="bi bi-gear-fill me-2"></i>Configuración</a> -->
+                <!-- Submenú -->
+                <!-- <a href="#submenu1" class="list-group-item list-group-item-action bg-transparent" data-bs-toggle="collapse">
+                    <i class="bi bi-folder-fill me-2"></i>Secciones
+                    </a> -->
+                <!-- <div class="collapse" id="submenu1">
+                    <a href="#" class="list-group-item list-group-item-action bg-transparent ms-4">Subsección 1</a>
+                    <a href="#" class="list-group-item list-group-item-action bg-transparent ms-4">Subsección 2</a>
+                    </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        {% block perfil %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<!-- <script type="module" src="{% static 'js/ecommerce/crear_usuario_cliente.js' %}"></script> -->
+{% endblock %}
