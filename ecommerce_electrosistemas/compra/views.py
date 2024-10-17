@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import Proveedores, Compras, DetalleCompras
 from producto.models import Productos
@@ -9,15 +10,15 @@ from django.contrib.auth.models import User
 
 import json
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaProveedor(request):
     return render(request, 'proveedor/proveedor.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaCompra(request):
     return render(request, 'compra/compra.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def AgregarProveedor(request):
     if request.method == 'POST':
         # Recoger los datos por POST
@@ -69,7 +70,7 @@ def AgregarProveedor(request):
     # Y finalmente devolvemos una respuesta
     return JsonResponse({'res': res, 'msg': msg})
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def ListarProveedores(request):
     # Inicializamos variables de respuesta
     data = {}
@@ -101,7 +102,7 @@ def ListarProveedores(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VerParaEditarProveedor(request):
     # Capturamos el id por get
     id = request.GET.get('id', None)
@@ -139,7 +140,7 @@ def VerParaEditarProveedor(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def AgregarCompra(request):
     if request.method == 'POST':
         # Deserializar el cuerpo de la solicitud JSON
@@ -246,7 +247,7 @@ def AgregarCompra(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def ConfirmarCompra(request):
     if request.method == 'POST':
         data = json.loads(request.body) # Parseamos el cuerpo de la solicitad a formato JSON
@@ -271,7 +272,7 @@ def ConfirmarCompra(request):
 
     return JsonResponse({'res': True})
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def ListarDetalleCompras(request):
     id = request.GET.get('id', None)
 
@@ -316,7 +317,7 @@ def ListarDetalleCompras(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def EliminarCompra(request):
     if request.method == 'POST':
         data = json.loads(request.body) # Parseamos el cuerpo de la solicitad a formato JSON
@@ -366,7 +367,7 @@ def EliminarCompra(request):
 
     return JsonResponse({'res': res, 'msg': msg})
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def ListarCompras(request):
     # Inicializamos variables de respuesta
     data = {}

@@ -14,4 +14,7 @@ urlpatterns = [
     path('confirmar-venta/', views.ConfirmarVenta, name='confirmar_venta'),
     path('listar-ventas/', views.ListarVentas, name='listar_ventas'),
     path('listar-tipo-pagos/', views.ListarTipoPagos, name='listar_tipo_pagos'),
+    path('listar-detalle-seguimiento/', views.ListarDetalleSeguimiento, name='listar_detalle_seguimiento'),
+    path('listar-seguimientos/', views.ListarSeguimientos, name='listar_seguimientos'),
+    path('crear-detalle-seguimiento/', views.CrearDetalleSeguimiento, name='crear_detalle_seguimiento'),
 ]

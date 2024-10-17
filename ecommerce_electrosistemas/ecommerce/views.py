@@ -13,7 +13,16 @@ def VistaEcommerce(request):
     return render(request, 'ecommerce/ecommerce.html')
 
 def VistaCrearUsuario(request):
-    return render(request, 'ecommerce/crear_usuario.html')
+    id = request.GET.get('id', None)
+    cliente = ''
+
+    try:
+        if id:
+            cliente = Clientes.objects.get(id = id)
+    except:
+        cliente = ''
+  
+    return render(request, 'ecommerce/crear_usuario.html', {'cliente': cliente})
 
 def VistaIniciarSesion(request):
     return render(request, 'ecommerce/iniciar_sesion.html')
@@ -22,13 +31,25 @@ def VistaCarrito(request):
     return render(request, 'ecommerce/carrito.html')
 
 def VistaPerfilUsuario(request):
-    return render(request, 'ecommerce/perfil_usuario.html')
+    try:
+        cliente = UsuarioCliente.objects.get(id_usuario = request.user.id)
+    except:
+        cliente = ''
+    return render(request, 'ecommerce/perfil_usuario.html', {'cliente': cliente})
 
 def VistaPedidosUsuario(request):
-    return render(request, 'ecommerce/pedidos_usuario.html')
+    try:
+        cliente = UsuarioCliente.objects.get(id_usuario = request.user.id)
+    except:
+        cliente = ''
+    return render(request, 'ecommerce/pedidos_usuario.html', {'cliente': cliente})
 
 def VistaPerfil(request):
-    return render(request, 'ecommerce/perfil.html')
+    try:
+        cliente = UsuarioCliente.objects.get(id_usuario = request.user.id)
+    except:
+        cliente = ''
+    return render(request, 'ecommerce/perfil.html', {'cliente': cliente})
 
 # Funcion para crear usuario para el cliente
 def CrearUsuarioCliente(request):
@@ -90,6 +111,44 @@ def CrearUsuarioCliente(request):
         data['msg'] = msg
 
     return JsonResponse(data)
+
+def PerfilCliente(request):
+    # Variables de respuesta
+    res = False
+    msg = ''
+    data = {}
+    data['data'] = []
+
+    #try:
+    # Buscar el del cliente mediante su usuario
+    cliente = UsuarioCliente.objects.get(id_usuario = request.user.id).id_cliente
+
+    # Prepar datos de respuesta
+    data['data'].append(
+        {
+            'id': cliente.id,
+            'nombres': cliente.nombres,
+            'apellidos': cliente.apellidos,
+            'nit': cliente.nit,
+            'cui': cliente.cui,
+            'empresa': cliente.empresa,
+            'telefono': cliente.telefono,
+            'direccion': cliente.direccion,
+            'fecha_registro': cliente.fecha_registro,
+        }
+    )
+    res = True
+    msg = 'Perfil obtenido correctamente.'
+    """ except:
+        res = False
+        msg = 'Hubo un error al ver perfil.' """
+
+    data['res'] = res
+    data['msg'] = msg
+
+    return JsonResponse(data)
+
+
 
 # Funcion para cerrar sesión
 def CerrarSesion(request):

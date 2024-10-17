@@ -5,6 +5,7 @@ import { select_clientes } from "./select_clientes.js";
 import { listar_detalle_ventas } from "./listar_detalle_ventas.js";
 import { confirmar_venta } from "./confirmar_venta.js";
 import { eliminar_venta } from "./eliminar_venta.js";
+import { crear_detalle_seguimiento } from "./crear_detalle_seguimiento.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
@@ -80,5 +81,15 @@ document.getElementById('tabla_venta').addEventListener('click', e => {
     if (id) {
         listar_detalle_ventas(true, id)
         new bootstrap.Modal(document.getElementById('modal_detalle_venta')).show();
+    }
+});
+
+// Evento para actulizar el seguimiento del pedido
+document.getElementById('tabla_venta').addEventListener('change', e => {
+    let id_seguimiento = parseInt(e.target.value);
+    let id_venta = parseInt(e.target.getAttribute('id_venta'));
+
+    if (id_venta) {
+        crear_detalle_seguimiento(id_seguimiento, id_venta);
     }
 });

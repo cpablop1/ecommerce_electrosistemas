@@ -42,3 +42,4 @@ class DetalleSeguimientos(models.Model):
     observaciones = models.TextField()
     id_seguimiento = models.ForeignKey(Seguimientos, on_delete = models.CASCADE)
     id_venta = models.ForeignKey(Ventas, on_delete = models.CASCADE)
+    fecha_registro = models.DateTimeField(auto_now_add = True)

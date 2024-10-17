@@ -2,29 +2,30 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import Categorias, Marcas, Productos, Descuentos
 from django.contrib.auth.models import User
 
 import json
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaProducto(request):
     return render(request, 'producto/producto.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaCategoria(request):
     return render(request, 'categoria/categoria.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaMarca(request):
     return render(request, 'marca/marca.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaDescuento(request):
     return render(request, 'descuento/descuento.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def AgregarCategoria(request):
     if request.method == 'POST':
         # Recoger los datos por POST
@@ -63,7 +64,7 @@ def AgregarCategoria(request):
     # Y finalmente devolvemos una respuesta
     return JsonResponse({'res': res, 'msg': msg})
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def ListarCategorias(request):
     # Inicializamos variables de respuesta
     data = {}
@@ -87,7 +88,7 @@ def ListarCategorias(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VerParaEditarCategoria(request):
     # Capturamos el id por get
     id = request.GET.get('id', None)
@@ -120,7 +121,7 @@ def VerParaEditarCategoria(request):
     return JsonResponse(data)
 
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def AgregarMarca(request):
     if request.method == 'POST':
         # Recoger los datos por POST
@@ -159,7 +160,7 @@ def AgregarMarca(request):
     # Y finalmente devolvemos una respuesta
     return JsonResponse({'res': res, 'msg': msg})
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def ListarMarcas(request):
     # Inicializamos variables de respuesta
     data = {}
@@ -183,7 +184,7 @@ def ListarMarcas(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VerParaEditarMarca(request):
     # Capturamos el id por get
     id = request.GET.get('id', None)
@@ -215,7 +216,7 @@ def VerParaEditarMarca(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def AgregarProducto(request):
     if request.method == 'POST':
         # Recoger los datos por POST
@@ -232,11 +233,6 @@ def AgregarProducto(request):
 
         check_img_1 = request.POST.get('check_img_1')
         check_img_2 = request.POST.get('check_img_2')
-
-        print('-----------------')
-        print(f'check_img_1 {type(check_img_1)}')
-        print(f'check_img_2 {type(check_img_2)}')
-        print('-----------------')
 
         # Formateamos los datos obtenidos
         try:
@@ -373,7 +369,7 @@ def ListarProductos(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VerParaEditarProducto(request):
     # Capturamos el id por get
     id = request.GET.get('id', None)
@@ -412,7 +408,7 @@ def VerParaEditarProducto(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def AgregarDescuento(request):
     if request.method == 'POST':
         # Recoger los datos por POST
@@ -456,7 +452,7 @@ def AgregarDescuento(request):
     # Y finalmente devolvemos una respuesta
     return JsonResponse({'res': res, 'msg': msg})
 
-@login_required(login_url='vista_login')
+# @login_required(login_url='vista_login')
 def ListarDescuentos(request):
     # Inicializamos variables de respuesta
     data = {}
@@ -485,7 +481,7 @@ def ListarDescuentos(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VerParaEditarDescuento(request):
     # Capturamos el id por get
     id = request.GET.get('id', None)

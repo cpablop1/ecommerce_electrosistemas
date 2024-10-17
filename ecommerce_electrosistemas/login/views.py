@@ -14,8 +14,11 @@ def IniciarSesion(request):
 
         user = authenticate(request, username = user, password = password)
         if user is not None:
-            login(request, user)
-            return JsonResponse({'msg': f'Bienvenido {user}', 'res': True})
+            if user.is_staff or user.is_superuser:
+                login(request, user)
+                return JsonResponse({'msg': f'Bienvenido {user}, tienes privilegios de administrador.', 'res': True})
+            else:
+                return JsonResponse({'msg': 'No tienes permisos para acceder a esta área.', 'res': False})
         else:
             return JsonResponse({'msg': 'Ingrese una contraseña y usuario válido.', "res": False})
 

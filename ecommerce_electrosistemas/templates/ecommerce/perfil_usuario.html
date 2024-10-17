@@ -8,10 +8,10 @@
         <!-- Sidebar -->
         <div class="bg-light border-end">
             <div class="sidebar-heading text-center primary-text fs-4 fw-bold text-uppercase">
-                Carlos Zacarías
+                {{ cliente.id_cliente.nombres }} {{ cliente.id_cliente.apellidos }}
             </div>
             <div class="sidebar-heading text-center mb-3 primary-text fs-6 fw-bold text-uppercase border-bottom">
-                carlos@gmail.com
+                {{ user.email }}
             </div>
             <div class="list-group list-group-flush">
                 <a href="{% url 'vista_pedidos_usuario' %}"

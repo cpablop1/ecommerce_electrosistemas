@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from django.contrib.auth.models import User
 
@@ -11,15 +12,15 @@ from .models import Clientes, Ventas, DetalleVentas, Seguimientos, DetalleSeguim
 from producto.models import Productos
 from ecommerce.models import UsuarioCliente
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaCliente(request):
     return render(request, 'cliente/cliente.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VistaVenta(request):
     return render(request, 'venta/venta.html')
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def AgregarCliente(request):
     if request.method == 'POST':
         # Recoger los datos por POST
@@ -71,7 +72,7 @@ def AgregarCliente(request):
     # Y finalmente devolvemos una respuesta
     return JsonResponse({'res': res, 'msg': msg})
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def ListarClientes(request):
     # Inicializamos variables de respuesta
     data = {}
@@ -103,7 +104,7 @@ def ListarClientes(request):
 
     return JsonResponse(data)
 
-@login_required(login_url='vista_login')
+@staff_member_required(login_url='vista_login')
 def VerParaEditarCliente(request):
     # Capturamos el id por get
     id = request.GET.get('id', None)
@@ -443,6 +444,7 @@ def ListarVentas(request):
                 'id': ven.id,
                 'estado': ven.estado,
                 'seguimiento': ven.id_seguimiento.nombre,
+                'id_seguimiento': ven.id_seguimiento.id,
                 'cliente': f'{ven.id_cliente.nombres} {ven.id_cliente.apellidos} {(ven.id_cliente.empresa if len(ven.id_cliente.empresa) != 0 else "")}',
                 'tipo_pago': ven.id_tipo_pago.nombre,
                 'subtotal': ven.subtotal,
@@ -456,6 +458,7 @@ def ListarVentas(request):
 
     return JsonResponse(data)
 
+@login_required(login_url='vista_login')
 def ListarTipoPagos(request):
     # Inicializar variables de respuestas
     data = {}
@@ -481,6 +484,98 @@ def ListarTipoPagos(request):
         res = False
         msg = 'Hubo un error a listar los tipos de pago.'
 
+    data['res'] = res
+    data['msg'] = msg
+
+    return JsonResponse(data)
+
+@login_required(login_url='vista_login')
+def ListarDetalleSeguimiento(request):
+    # Capturamos los datos de entrada
+    id_venta = request.GET.get('id_venta', None)
+
+    # Preparando variales de respuesta
+    res = False
+    msg = ''
+    data = {}
+    data['data'] = []
+
+    # Instanciamos el modelo
+    seguimientos = DetalleSeguimientos.objects.filter(id_venta = id_venta)
+
+    for ds in seguimientos:
+        data['data'].append(
+            {
+                'observaciones': ds.observaciones,
+                'seguimiento': ds.id_seguimiento.nombre,
+                'descripcion': ds.id_seguimiento.descricion,
+                'fecha': ds.fecha_registro
+            }
+        )
+    
+    return JsonResponse(data)
+
+@login_required(login_url='vista_login')
+def ListarSeguimientos(request):
+    # Instanciamos el modelo
+    seguimientos = Seguimientos.objects.all()
+    # >Preparamos variables de respuesta
+    res = False
+    msg = ''
+    data = {}
+    data['data'] = []
+
+    # >Estructuramos datos de respuesta
+    for s in seguimientos:
+        data['data'].append(
+            {
+                'id': s.id,
+                'nombre': s.nombre,
+                'descripcion': s.descricion
+            }
+        )
+
+    return JsonResponse(data)
+
+@staff_member_required(login_url='vista_login')
+def CrearDetalleSeguimiento(request):
+    # Capturando los dato de entrada
+    id_seguimiento = request.GET.get('id_seguimiento', None)
+    id_venta = request.GET.get('id_venta', None)
+
+    # Formateamos los datos de entrada y reasignamos
+    try:
+        int(id_seguimiento)
+        id_seguimiento = Seguimientos.objects.get(id = id_seguimiento)
+    except:
+        id_seguimiento = None
+
+    try:
+        int(id_venta)
+        id_venta = Ventas.objects.get(id = id_venta)
+    except:
+        id_venta = None
+
+    # > Estableciendo los variables de respuesta
+    res = False
+    msg = ''
+    data = {}
+
+    try:
+        # Crear seguimiento de pedido
+        DetalleSeguimientos.objects.create(
+            id_seguimiento = id_seguimiento,
+            id_venta = id_venta
+        )
+        # Y actualizamos el estado del seguimiento
+        id_venta.id_seguimiento = id_seguimiento
+        id_venta.save()
+        res = True
+        msg = 'Pedido actualizado correctamente.'
+    except:
+        res = False
+        msg = 'Hubo un problema al actualizar pedido.'
+    
     data['res'] = res
     data['msg'] = msg
 

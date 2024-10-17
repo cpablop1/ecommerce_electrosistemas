@@ -5,4 +5,53 @@
 
 {% block perfil %}
 <h1>Perfil</h1>
-{% endblock %}
+
+<div class="shadow-lg p-3 bg-body rounded">
+    <div class="row">
+        <label class="col-sm-4 col-form-label fw-bold">Nombres y apellidos:</label>
+        <div class="col-sm-8">
+            <p id="nombres">Carlos Zacarias</p>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-4 col-form-label fw-bold">NIT:</label>
+        <div class="col-sm-8">
+            <p id="nit">46546545645</p>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-4 col-form-label fw-bold">CUI:</label>
+        <div class="col-sm-8">
+            <p id="cui">46546545645</p>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-4 col-form-label fw-bold">Empresa:</label>
+        <div class="col-sm-8">
+            <p id="empresa">Electrosistemas</p>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 col-form-label fw-bold">Teléfono:</label>
+            <div class="col-sm-8">
+                <p id="telefono">55887744</p>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 col-form-label fw-bold">Dirección:</label>
+            <div class="col-sm-8">
+                <p id="direccion">Ciudad de Guatemala</p>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 col-form-label fw-bold">Creado el:</label>
+            <div class="col-sm-8">
+                <p id="fecha">16/10/2024</p>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary btn-sm w-25" id="editar_perfil">Editar</button>
+        </div>
+    </div>
+
+    <script type="module" src="{% static 'js/ecommerce/perfil_cliente.js' %}"></script>
+    {% endblock %}

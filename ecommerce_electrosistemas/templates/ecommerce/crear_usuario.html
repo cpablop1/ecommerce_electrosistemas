@@ -11,31 +11,31 @@
             <h2 class="text-primary text-center"><i class="bi bi-person-circle"></i> Crear usuario</h2>
             <div class="mb-3">
                 <label for="nombres" class="form-label">Nombre</label>
-                <input type="text" class="form-control form-control-sm" id="nombres" name="nombres" maxlength="50">
+                <input type="text" class="form-control form-control-sm" id="nombres" name="nombres" maxlength="50" value="{{ cliente.nombres }}">
             </div>
             <div class="mb-3">
                 <label for="apellidos" class="form-label">Apellido</label>
-                <input type="text" class="form-control form-control-sm" id="apellidos" name="apellidos" maxlength="50">
+                <input type="text" class="form-control form-control-sm" id="apellidos" name="apellidos" maxlength="50" value="{{ cliente.apellidos }}">
             </div>
             <div class="mb-3">
                 <label for="nit" class="form-label">NIT</label>
-                <input type="text" class="form-control form-control-sm" id="nit" name="nit" maxlength="15">
+                <input type="text" class="form-control form-control-sm" id="nit" name="nit" maxlength="15" value="{{ cliente.nit }}">
             </div>
             <div class="mb-3">
                 <label for="cui" class="form-label">CUI</label>
-                <input type="text" class="form-control form-control-sm" id="cui" name="cui" maxlength="13">
+                <input type="text" class="form-control form-control-sm" id="cui" name="cui" maxlength="13" value="{{ cliente.cui }}">
             </div>
             <div class="mb-3">
                 <label for="empresa" class="form-label">Empresa</label>
-                <input type="text" class="form-control form-control-sm" id="empresa" name="empresa" maxlength="100">
+                <input type="text" class="form-control form-control-sm" id="empresa" name="empresa" maxlength="100" value="{{ cliente.empresa }}">
             </div>
             <div class="mb-3">
                 <label for="telefono" class="form-label">Teléfono</label>
-                <input type="text" class="form-control form-control-sm" id="telefono" name="telefono" maxlength="20">
+                <input type="text" class="form-control form-control-sm" id="telefono" name="telefono" maxlength="20" value="{{ cliente.telefono }}">
             </div>
             <div class="mb-3">
                 <label for="direccion" class="form-label">Dirección</label>
-                <input type="text" class="form-control form-control-sm" id="direccion" name="direccion" maxlength="100">
+                <input type="text" class="form-control form-control-sm" id="direccion" name="direccion" maxlength="100" value="{{ cliente.direccion }}">
             </div>
             <fieldset>
                 <legend class="text-primary">Datos para iniciar sesión:</legend>
