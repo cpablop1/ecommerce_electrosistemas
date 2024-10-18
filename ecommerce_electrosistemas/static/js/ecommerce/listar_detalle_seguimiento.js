@@ -17,9 +17,7 @@ export function listar_detalle_seguimiento(id) {
 
         });
 
-
         document.getElementById('tabla_detalle_seguimiento').childNodes[3].innerHTML = fila;
-
 
     });
 }

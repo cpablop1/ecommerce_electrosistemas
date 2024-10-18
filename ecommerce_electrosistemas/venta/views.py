@@ -197,7 +197,7 @@ def AgregarVenta(request):
         else:
             buscar_cliente = UsuarioCliente.objects.get(id_usuario = request.user.id)
             if buscar_cliente:
-                id_cliente = buscar_cliente
+                id_cliente = buscar_cliente.id_cliente
             else:
                 id_cliente = Clientes.objects.get(id = 1)
 

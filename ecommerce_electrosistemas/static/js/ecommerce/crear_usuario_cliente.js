@@ -13,9 +13,14 @@ export function crear_usuario_cliente(formulario) {
         return res.json(); // Convertimos la respuesta del servidor a un objecto JSON
     }).then((res) => {
         if (res.res) { // Si la respuesta fue exitosa
-            formulario.reset(); // Limpiamos el formulario
-            alert(res.msg);
-            window.location.href = '/ecommerce/iniciar-sesion/';
+            if (res.crear) {
+                formulario.reset(); // Limpiamos el formulario
+                alert(res.msg);
+                window.location.href = '/ecommerce/iniciar-sesion/';
+            } else{
+                alert(res.msg);
+                window.location.href = '/ecommerce/perfil/';
+            }
         } else {
             alert(res.msg); // Caso contrario lanzamos una alerta
         }

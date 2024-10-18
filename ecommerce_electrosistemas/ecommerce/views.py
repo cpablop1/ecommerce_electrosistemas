@@ -15,14 +15,17 @@ def VistaEcommerce(request):
 def VistaCrearUsuario(request):
     id = request.GET.get('id', None)
     cliente = ''
+    hay_cliente = False
 
     try:
         if id:
             cliente = Clientes.objects.get(id = id)
+            hay_cliente = True
     except:
         cliente = ''
+        hay_cliente = False
   
-    return render(request, 'ecommerce/crear_usuario.html', {'cliente': cliente})
+    return render(request, 'ecommerce/crear_usuario.html', {'cliente': cliente, 'hay_cliente': hay_cliente})
 
 def VistaIniciarSesion(request):
     return render(request, 'ecommerce/iniciar_sesion.html')
@@ -55,6 +58,7 @@ def VistaPerfil(request):
 def CrearUsuarioCliente(request):
     if request.method == 'POST': # Verificamos si se hizo una petición por POST
         # Recogemos los datos
+        id = request.POST.get('id', None)
         nombres = request.POST.get('nombres', '').upper()
         apellidos = request.POST.get('apellidos', '').upper()
         nit = request.POST.get('nit', '').upper()
@@ -67,48 +71,70 @@ def CrearUsuarioCliente(request):
         correo = request.POST.get('correo', '')
         clave = request.POST.get('clave', '')
 
+        # Validar id
+        try:
+            int(id)
+        except:
+            id = None
+
         # Variables de respuesta
         data = {}
         res = False
+        crear = False
         msg = ''
         
         try:
             # Creamos el usuario
-            crear_usuario = User.objects.create_user(
-                username = usuario,
-                email = correo,
-                password = clave
-            )
-            crear_usuario.save()
+            if id is None:
+                crear_usuario = User.objects.create_user(
+                    username = usuario,
+                    email = correo,
+                    password = clave
+                )
+                crear_usuario.save()
             
+            # Preparar los parametros por defecto del cliente
+            defaults = {
+                "nombres": nombres,
+                "apellidos": apellidos,
+                "nit": nit,
+                "cui": cui,
+                "empresa": empresa,
+                "telefono": telefono,
+                "direccion": direccion
+            }
+
+            if id is None:
+                defaults['id_usuario'] = crear_usuario
+
             # Creamos el cliente
-            crear_cliente = Clientes.objects.create(
-                nombres = nombres,
-                apellidos = apellidos,
-                nit = nit,
-                cui = cui,
-                empresa = empresa,
-                telefono = telefono,
-                direccion = direccion,
-                id_usuario = crear_usuario
+            crear_cliente = Clientes.objects.update_or_create(
+                id = id,
+                defaults = defaults
             )
-            crear_cliente.save()
 
             # Creamos Usuario cliente, para saber cual es el usuario del cliente
-            crear_usuario_cliente = UsuarioCliente.objects.create(
-                id_usuario = crear_usuario,
-                id_cliente = crear_cliente
-            )
-            crear_usuario_cliente.save()
-            
+            if id is None:
+                crear_usuario_cliente = UsuarioCliente.objects.create(
+                    id_usuario = crear_usuario,
+                    id_cliente = crear_cliente[0]
+                )
+                crear_usuario_cliente.save()
+        
             res = True
-            msg = 'Usuario creada correctamente.'
+            if crear_cliente[1]:
+                msg = 'Usuario creada correctamente.'
+                crear = True
+            else:
+                msg = 'Perfil actualizado correctamente.'
+
         except:
             res = False
             msg = 'Hubo un error al crear su usuario, recargue la página y vuelve a intentar.'
         
         data['res'] = res
         data['msg'] = msg
+        data['crear'] = crear
 
     return JsonResponse(data)
 

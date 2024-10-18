@@ -12,6 +12,7 @@
             <div class="mb-3">
                 <label for="nombres" class="form-label">Nombre</label>
                 <input type="text" class="form-control form-control-sm" id="nombres" name="nombres" maxlength="50" value="{{ cliente.nombres }}">
+                <input type="text" value="{{ cliente.id }}" name="id" hidden>
             </div>
             <div class="mb-3">
                 <label for="apellidos" class="form-label">Apellido</label>
@@ -37,6 +38,7 @@
                 <label for="direccion" class="form-label">Dirección</label>
                 <input type="text" class="form-control form-control-sm" id="direccion" name="direccion" maxlength="100" value="{{ cliente.direccion }}">
             </div>
+            {% if not hay_cliente %}
             <fieldset>
                 <legend class="text-primary">Datos para iniciar sesión:</legend>
                 <div class="border border-primary p-3">
@@ -74,6 +76,7 @@
                     </div>
                 </div>
             </fieldset>
+            {% endif %}
             <button type="submit" class="btn btn-primary m-2">Enviar</button>
         </form>
     </div>
