@@ -64,7 +64,7 @@ def AgregarCategoria(request):
     # Y finalmente devolvemos una respuesta
     return JsonResponse({'res': res, 'msg': msg})
 
-@staff_member_required(login_url='vista_login')
+#@staff_member_required(login_url='vista_login')
 def ListarCategorias(request):
     # Inicializamos variables de respuesta
     data = {}
@@ -310,10 +310,18 @@ def AgregarProducto(request):
 #@login_required(login_url='vista_login')
 def ListarProductos(request):
     id = request.GET.get('id', None)
+    id_categoria = request.GET.get('id_categoria', None)
+    buscar = request.GET.get('buscar', '')
+    
     try:
         int(id)
     except:
         id = None
+    
+    try:
+        int(id_categoria)
+    except:
+        id_categoria = None
 
     # Inicializamos variables de respuesta
     data = {}
@@ -343,7 +351,11 @@ def ListarProductos(request):
                 }]
         else:
             # Instanciar el modelo
-            productos = Productos.objects.all()
+            if (id_categoria != None):
+                productos = Productos.objects.filter(id_categoria = id_categoria)
+            else:
+                productos = Productos.objects.all()
+
             # Preparar el listado de productos
             for pro in productos:
                 data['data'].append({
