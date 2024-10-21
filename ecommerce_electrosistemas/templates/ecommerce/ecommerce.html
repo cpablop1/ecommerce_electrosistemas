@@ -53,8 +53,9 @@
 
 
 {% block script %}
+{{ block.super }}
 <script>
     var userIsAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
 </script>
-<!-- <script type="module" src="{% static 'js/ecommerce/main.js' %}"></script> -->
+<script type="module" src="{% static 'js/ecommerce/main.js' %}"></script>
 {% endblock %}

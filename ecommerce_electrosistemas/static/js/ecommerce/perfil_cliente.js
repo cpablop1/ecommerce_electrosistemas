@@ -7,7 +7,6 @@ export function perfil_cliente() {
     fetch('/ecommerce/perfil-cliente/').then(res => {
         return res.json();
     }).then(data => {
-        console.log(data.data[0].nombres);
         document.getElementById('nombres').innerHTML = `${data.data[0].nombres} ${data.data[0].apellidos}`;
         document.getElementById('nit').innerHTML = data.data[0].nit;
         document.getElementById('cui').innerHTML = data.data[0].cui;

@@ -3,6 +3,7 @@ from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Q
 
 from .models import Categorias, Marcas, Productos, Descuentos
 from django.contrib.auth.models import User
@@ -311,7 +312,7 @@ def AgregarProducto(request):
 def ListarProductos(request):
     id = request.GET.get('id', None)
     id_categoria = request.GET.get('id_categoria', None)
-    buscar = request.GET.get('buscar', '')
+    buscar = request.GET.get('buscar', '').strip()
     
     try:
         int(id)
@@ -353,6 +354,8 @@ def ListarProductos(request):
             # Instanciar el modelo
             if (id_categoria != None):
                 productos = Productos.objects.filter(id_categoria = id_categoria)
+            elif len(buscar) != 0:
+                productos = Productos.objects.filter(Q(descripcion__icontains=buscar))
             else:
                 productos = Productos.objects.all()
 
