@@ -27,11 +27,11 @@ export function listar_productos(data) {
         
         for (let item of data.data) {
             if (item.promo) {
-                promo = `<div class="position-absolute p-2 top-0 start-0 bg-danger rounded-pill text-white fw-bold">
-                            <span>${item.porcentaje}% off</span>
+                promo = `<div class="position-absolute p-2 top-0 start-0 bg-success rounded-pill text-white fw-bold">
+                            <span>${item.porcentaje}% de descuento</span>
                         </div>`;
 
-                precio = `<h5 class="card-title text-danger">Q. ${new Intl.NumberFormat('es-MX').format(item.precio_promo)}</h5>
+                precio = `<h5 class="card-title text-success">Q. ${new Intl.NumberFormat('es-MX').format(item.precio_promo)}</h5>
                         <h6 class="card-title text-muted">Antes Q. ${new Intl.NumberFormat('es-MX').format(item.precio_publico)}</h6>`;
                             
             } else{
