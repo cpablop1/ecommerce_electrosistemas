@@ -333,8 +333,6 @@ def ListarProductos(request):
             # Instanciar el modelo
             productos = Productos.objects.get(id = id)
             # Preparar el listado de productos
-            print(productos.descripcion)
-            print('ñasjdflkñsajfkdljdj')
             data['data'] = [{
                     'id': productos.id,
                     'descripcion': productos.descripcion,
@@ -361,11 +359,23 @@ def ListarProductos(request):
 
             # Preparar el listado de productos
             for pro in productos:
+                promo = Descuentos.objects.filter(id_producto = pro.id)
+                precio_promo = 0
+                if promo:
+                    porcentaje = promo[0].porcentaje
+                    precio_promo = (float(promo[0].porcentaje)/100) * float(pro.precio_publico)
+                    promo = True
+                else:
+                    promo = False
+                
                 data['data'].append({
                     'id': pro.id,
                     'descripcion': pro.descripcion,
                     'stock': pro.stock,
                     'costo': pro.costo,
+                    'promo': promo,
+                    'precio_promo': precio_promo,
+                    'porcentaje': porcentaje,
                     'precio_publico': pro.precio_publico,
                     'precio_mayorista': pro.precio_mayorista,
                     'img_1': pro.img_1.name,
