@@ -361,6 +361,7 @@ def ListarProductos(request):
             for pro in productos:
                 promo = Descuentos.objects.filter(id_producto = pro.id)
                 precio_promo = 0
+                porcentaje = 0
                 if promo:
                     porcentaje = promo[0].porcentaje
                     precio_promo = (float(promo[0].porcentaje)/100) * float(pro.precio_publico)
