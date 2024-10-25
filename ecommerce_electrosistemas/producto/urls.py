@@ -19,4 +19,5 @@ urlpatterns = [
     path('agregar-descuento/', views.AgregarDescuento, name='agregar_descuento'),
     path('listar-descuentos/', views.ListarDescuentos, name='listar_descuentos'),
     path('ver-para-editar-descuento/', views.VerParaEditarDescuento, name='ver_para_editar_descuento'),
+    path('eliminar-descuento/', views.EliminarDescuento, name='eliminar_descuento'),
 ]

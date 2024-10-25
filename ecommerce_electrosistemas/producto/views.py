@@ -332,12 +332,31 @@ def ListarProductos(request):
         if id != None:
             # Instanciar el modelo
             productos = Productos.objects.get(id = id)
+            # Ver si tiene promociones el producto
+            promo = Descuentos.objects.filter(id_producto = id)
+            promo_estado = False
+            precio_promo = 0
+            porcentaje = 0
+            promo_fecha = ''
+            if promo:
+                porcentaje = promo[0].porcentaje
+                precio_promo = float(productos.precio_publico) - ((float(promo[0].porcentaje)/100) * float(productos.precio_publico))
+                promo_estado = promo[0].estado
+                promo_fecha = promo[0].fecha_final
+                promo = True
+            else:
+                promo = False
             # Preparar el listado de productos
             data['data'] = [{
                     'id': productos.id,
                     'descripcion': productos.descripcion,
                     'stock': productos.stock,
                     'costo': productos.costo,
+                    'promo': promo,
+                    'promo_estado': promo_estado,
+                    'precio_promo': precio_promo,
+                    'porcentaje': porcentaje,
+                    'promo_fecha': promo_fecha,
                     'precio_publico': productos.precio_publico,
                     'precio_mayorista': productos.precio_mayorista,
                     'img_1': productos.img_1.name,
@@ -359,12 +378,16 @@ def ListarProductos(request):
 
             # Preparar el listado de productos
             for pro in productos:
+                # Ver si tiene promociones el producto
                 promo = Descuentos.objects.filter(id_producto = pro.id)
+                promo_estado = False
                 precio_promo = 0
                 porcentaje = 0
+                print(promo)
                 if promo:
                     porcentaje = promo[0].porcentaje
-                    precio_promo = (float(promo[0].porcentaje)/100) * float(pro.precio_publico)
+                    precio_promo = float(pro.precio_publico) - ((float(promo[0].porcentaje)/100) * float(pro.precio_publico))
+                    promo_estado = promo[0].estado
                     promo = True
                 else:
                     promo = False
@@ -375,6 +398,7 @@ def ListarProductos(request):
                     'stock': pro.stock,
                     'costo': pro.costo,
                     'promo': promo,
+                    'promo_estado': promo_estado,
                     'precio_promo': precio_promo,
                     'porcentaje': porcentaje,
                     'precio_publico': pro.precio_publico,
@@ -443,6 +467,7 @@ def AgregarDescuento(request):
         fecha_final = request.POST.get('fecha_final', '')
         porcentaje = request.POST.get('porcentaje', 0)
         id_producto = request.POST.get('id_producto', None)
+        estado = request.POST.get('estado', False)
 
         # Formateamos el id
         try:
@@ -450,6 +475,9 @@ def AgregarDescuento(request):
         except:
             msg = 'Hubo un error al visualizar la descuento.'
             id = None
+
+        if estado == "on":
+            estado = True
 
         # Inicializando las respuestas del servidor
         res = False
@@ -462,6 +490,7 @@ def AgregarDescuento(request):
                 "fecha_inicio": fecha_inicio,
                 "fecha_final": fecha_final,
                 "porcentaje": porcentaje,
+                "estado": estado,
                 "id_producto": Productos.objects.get(id = id_producto),
                 "id_usuario": User.objects.get(id = request.user.id),
             }
@@ -541,3 +570,28 @@ def VerParaEditarDescuento(request):
     data['msg'] = msg
 
     return JsonResponse(data)
+
+def EliminarDescuento(request):
+    # Caputuramos el id
+    id = request.GET.get('id', None)
+
+    # Varialbes de respuesta
+    res = False
+    msg = ''
+
+    # Formateamos el id
+    try:
+        int(id)
+    except:
+        id = None
+    
+    # Instanciamos el modelo y eliminamos el registro
+    try:
+        Descuentos.objects.get(id = id).delete()
+        res = True
+        msg = 'Descuento eliminado correctamente.'
+    except:
+        res = False
+        msg = 'Hubo un problema al eliminar descuento.'
+
+    return JsonResponse({'res': res, 'msg': msg})

@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 import json
 
 from .models import Clientes, Ventas, DetalleVentas, Seguimientos, DetalleSeguimientos, TipoPagos
-from producto.models import Productos
+from producto.models import Productos, Descuentos
 from ecommerce.models import UsuarioCliente
 
 @staff_member_required(login_url='vista_login')
@@ -207,11 +207,23 @@ def AgregarVenta(request):
         else:
             id_tipo_pago = TipoPagos.objects.get(id = 1)
 
+        # Verificar el producto tiene promociones
+        promo = Descuentos.objects.filter(id_producto = producto.id)
+        precio = 0
+        porcentaje = 0
+        if promo:
+            porcentaje = promo[0].porcentaje
+            precio = float(producto.precio_publico) - ((float(promo[0].porcentaje)/100) * float(producto.precio_publico))
+            promo = True
+        else:
+            promo = False
+            precio = producto.precio_publico
+
         if not venta:
     
             # Crear la venta
             crear_venta = Ventas.objects.create(
-                subtotal = producto.precio_publico,
+                subtotal = precio,
                 id_seguimiento = Seguimientos.objects.get(id = 1),
                 id_cliente = id_cliente,
                 id_usuario = User.objects.get(id = request.user.id),
@@ -222,8 +234,8 @@ def AgregarVenta(request):
             # Crear el detalle de venta
             DetalleVentas.objects.create(
                 cantidad = 1,
-                precio = producto.precio_publico,
-                total = producto.precio_publico,
+                precio = precio,
+                total = precio,
                 id_producto = producto,
                 id_venta = crear_venta
             )
@@ -250,8 +262,8 @@ def AgregarVenta(request):
                 # Creamos un detalle de compra
                 DetalleVentas.objects.create(
                     cantidad = 1,
-                    precio = producto.precio_publico,
-                    total = producto.precio_publico,
+                    precio = precio,
+                    total = precio,
                     id_producto = producto,
                     id_venta = venta[0]
                 )

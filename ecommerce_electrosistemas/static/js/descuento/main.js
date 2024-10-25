@@ -3,6 +3,7 @@ import { listar } from "./listar.js";
 import { editar } from "./editar.js";
 import { select_productos } from "./select_productos.js";
 import { validacion } from "./validacion.js";
+import { eliminar } from "./eliminar.js";
 
 // Al cargar el DOM ejecutar la funcion de listar
 window.onload = () => {
@@ -29,5 +30,14 @@ document.getElementById('form_descuento').addEventListener('submit', e => {
     
     if(validar) {
         agregar(e.target);
+    }
+});
+
+// Evento para eliminar descuento
+document.getElementById('tabla_descuento').addEventListener('click', e => {
+    let id = parseInt(e.target.getAttribute('desc'))
+
+    if (id) {
+        eliminar(id);
     }
 });

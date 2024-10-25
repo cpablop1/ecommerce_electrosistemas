@@ -7,7 +7,12 @@ export function editar(id) {
     select_productos();
 
     fetch(`/producto/ver-para-editar-descuento?id=${id}`).then(res => res.json()).then(data => {
-
+        console.log(data.data)
+        if (data.data.estado) {
+            document.getElementById('estado').checked = true;
+        } else{
+            document.getElementById('estado').checked = false;
+        }
         document.getElementById('id').value = data.data.id;
         document.getElementById('fecha_inicio').value = data.data.fecha_inicio;
         document.getElementById('fecha_final').value = data.data.fecha_final;
