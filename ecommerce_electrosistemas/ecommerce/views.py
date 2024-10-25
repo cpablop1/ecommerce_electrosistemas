@@ -54,6 +54,9 @@ def VistaPerfil(request):
         cliente = ''
     return render(request, 'ecommerce/perfil.html', {'cliente': cliente})
 
+def VistaSobreNosotros(request):
+    return render(request, 'ecommerce/sobre_nosotros.html')
+
 # Funcion para crear usuario para el cliente
 def CrearUsuarioCliente(request):
     if request.method == 'POST': # Verificamos si se hizo una petición por POST

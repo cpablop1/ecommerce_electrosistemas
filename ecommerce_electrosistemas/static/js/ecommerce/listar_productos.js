@@ -55,13 +55,13 @@ export function listar_productos(data) {
             }
 
             productos += `<div class="col">
-                                <div class="card m-2" style="width: 18rem;">
+                                <div class="card m-1" style="width: 18rem;">
                                     <div class="position-relative">
                                         <img role="button" src="${img}" class="card-img-top" alt="${item.descripcion}" producto="${item.id}">
                                         ${promo}
                                     </div>
                                     <div class="card-body">
-                                        <h5 role="button" class="card-title" producto="${item.id}">${item.descripcion}</h5>
+                                        <h6 role="button" class="card-title" producto="${item.id}">${item.descripcion}</h6>
                                     </div>
                                     <div class="card-footer">
                                         <div class="row">

@@ -14,4 +14,5 @@ urlpatterns = [
     path('pedidos-usuario/', views.VistaPedidosUsuario, name='vista_pedidos_usuario'),
     path('perfil/', views.VistaPerfil, name='perfil'),
     path('perfil-cliente/', views.PerfilCliente, name='perfil_cliente'),
+    path('sobre-nosotros/', views.VistaSobreNosotros, name='sobre_nosotros'),
 ]
